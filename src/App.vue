@@ -1,25 +1,53 @@
 <template>
-  <a-row class="main" type="flex" align="middle" justify="start">
-    <a-col  :span="{ xs: 2, sm: 2, md: 4, lg: 4 }" style="background:red">
-asdas
-    </a-col>
+  <div>
 
-    <a-col  :span="{ xs: 18, sm: 18, md: 16, lg: 16 }" >
-      <Home/>
-    </a-col>
+    <!-- 头部 -->
+    <!-- <a-row type="flex" align="middle" justify="center">
+      <a-col :xs="20" :sm="20" :md="20" :lg="13" :xl="13" > -->
+        <Header/>
+      <!-- </a-col>
+    </a-row> -->
+    
 
-    <a-col  :span="{ xs: 2, sm: 2, md: 4, lg: 4 }" style="background:red">
-asdsa
-    </a-col>
-  </a-row>
+
+    
+    <!-- 内容显示 -->
+    <!-- <a-row class="apper" type="flex" align="middle" justify="center">
+      <a-col  :xs="20" :sm="20" :md="20" :lg="13" :xl="13" > -->
+        <router-view class="apper"/>  
+      <!-- </a-col>
+    </a-row> -->
+
+     <!-- 底部横线 -->
+    <!-- <a-row class="apper" style="border-top:1px solid gainsboro;"></a-row> -->
+
+    <!-- 底部 -->
+    <!-- <a-row class="apper" type="flex" align="middle" justify="center">
+      <a-col :xs="20" :sm="20" :md="20" :lg="13" :xl="13" > -->
+        <Footer class="apper"/>
+      <!-- </a-col>
+    </a-row> -->
+
+  </div>
 </template>
 
 <script>
-import Home from '@/components/Home'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 
 export default {
+  data(){
+    var UA = navigator.userAgent;
+    var ipad = !!(UA.match(/(iPad).*OS\s([\d_]+)/)),
+        isIphone = !!(!ipad && UA.match(/(iPhone\sOS)\s([\d_]+)/)),
+        isAndroid = !!(UA.match(/(Android)\s+([\d.]+)/)),
+        isPC = !(isIphone || isAndroid || ipad);
+    return {
+      isPC: isPC
+    }
+  },
   components:{
-    Home
+    Header,Footer
   },
   mounted() {
     // 解决IE加 '#'号不跳链接
@@ -39,6 +67,12 @@ export default {
 };
 </script>
 
-<style>
-  
+<style scoped>
+  .apper{
+    animation: apper 0.75s;
+  }
+  @keyframes apper{
+    0%   {opacity: 0;transform:translateY(30px);}
+    100% {opacity: 1;transform:translateY(0px);}
+  }
 </style>

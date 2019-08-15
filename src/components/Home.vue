@@ -1,21 +1,33 @@
 <template>
-  <div>
+  <a-row class="main" type="flex" align="middle" justify="center">
+
     <div>
-      <a-row type="flex" align="middle" justify="start">
-          <a-col class="title">网易云热评墙</a-col>
+      <a-row type="flex" align="middle" justify="space-between">
+          <a-col class="titleHeader" >
+            网易云热评墙
+          </a-col>
+          <a-col :span="5" style="margin-top:10px" >
+              <a-row type="flex" align="middle" justify="center" :gutter="{ xs: 6, sm: 6, md: 16, lg: 16 }">
+                <a-col>
+                  <a-icon class="home" type="home" theme="filled"/>
+                </a-col>·
+                <a-col>
+                  <a-icon class="wechat" type="wechat" theme="filled" />
+                </a-col>·
+                <a-col>
+                  <a-icon class="qq" type="qq" />
+                </a-col>
+              </a-row>
+          </a-col>
       </a-row>
-      <a-row type="flex" align="middle" justify="start" :gutter="{ xs: 12, sm: 12, md: 24, lg: 24 }">
+      <a-row type="flex" align="middle" justify="start" :gutter="14">
           <a-col :class="['nav',anaType==0 ? 'active' : '']" @click="getViewBy(0)">首页</a-col>·
           <a-col :class="['nav',anaType==1 ? 'active' : '']" @click="getViewBy(1)">热评</a-col>·
           <a-col :class="['nav',anaType==2 ? 'active' : '']" @click="getViewBy(2)">短句</a-col>·
           <a-col :class="['nav',anaType==3 ? 'active' : '']" @click="getViewBy(3)">知乎</a-col>·
           <a-col :class="['nav',anaType==4 ? 'active' : '']" @click="getViewBy(4)">折腾</a-col>·
-          <a-col :class="['nav',anaType==5 ? 'active' : '']" @click="getViewBy(5)">音乐</a-col>·
-          <a-col :class="['nav',anaType==6 ? 'active' : '']" @click="getViewBy(6)">段子</a-col>·
+          <a-col :class="['nav',anaType==6 ? 'active' : '']" @click="getViewBy(5)">段子</a-col>·
           <a-col :class="['nav',anaType==6 ? 'active' : '']" @click="getViewBy(6)">关于</a-col>
-      </a-row>
-      <a-row type="flex" align="middle" justify="start">
-          <a-col class="title">网易云热评墙</a-col>
       </a-row>
     </div>
     <a-row class="advert" type="flex" align="middle" justify="center">
@@ -44,18 +56,13 @@
           </a-col>
       </a-row>
     </div>
-    <item-list v-for="(ana,index) in anaData" :ana="ana" :key="index" class="apper"/>
 
-  </div>
+  </a-row>
 </template>
 
 <script>
-import ItemList from './ItemList.vue';
 
 export default {
-  components:{
-    ItemList
-  },
   data(){
     return{
       anaType:-1,
@@ -92,7 +99,7 @@ export default {
 
 // 私有的css
 <style scoped>
-.title{
+.titleHeader{
   cursor: pointer;
   font-size: 25px;
   margin: 50px 0px 30px 0px;
@@ -108,10 +115,10 @@ export default {
 }
 .advert{
   font-size: 14px;
-  width: 100%;
-  margin: 1rem 0rem 1rem -0.4rem;
-  padding: 0.3rem 0;
+  margin: 50px 0 40px -400px;
+  padding: 15px 0;
   color: gray;
+  width: 200%;
   border-top: 1px solid gainsboro;
   border-bottom: 1px solid gainsboro;
 }
