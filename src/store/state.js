@@ -1,7 +1,8 @@
 
 export default {
-  
+    
     user:null,
+    ana:{},
     anaType:-1,
     anaList:[
         {id:'1',userId:'1',typeId:'1',anaType:'热评',anaTitle:'人生总有那么一段大片大片空白的时光',anaContent:'人生总有那么一段大片大片空白的时光。你在等待，你在坚忍，你在静默。你在等一场春华秋实，你在等新一轮的春暖花开，你在等从未有过的雷霆万钧。这静默的日子有些长，有些闷，但是我也会等下去。我相信人的青春不止有一次，有时候，时光会给你额外的惊喜',anaFrom:'--来自网易云音乐《爱的故事.上集》',commentNum:20,prizeNum:120,createDate:'2018-03-24'},

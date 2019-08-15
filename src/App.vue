@@ -1,33 +1,8 @@
 <template>
   <div>
-
-    <!-- 头部 -->
-    <!-- <a-row type="flex" align="middle" justify="center">
-      <a-col :xs="20" :sm="20" :md="20" :lg="13" :xl="13" > -->
         <Header/>
-      <!-- </a-col>
-    </a-row> -->
-    
-
-
-    
-    <!-- 内容显示 -->
-    <!-- <a-row class="apper" type="flex" align="middle" justify="center">
-      <a-col  :xs="20" :sm="20" :md="20" :lg="13" :xl="13" > -->
         <router-view class="apper"/>  
-      <!-- </a-col>
-    </a-row> -->
-
-     <!-- 底部横线 -->
-    <!-- <a-row class="apper" style="border-top:1px solid gainsboro;"></a-row> -->
-
-    <!-- 底部 -->
-    <!-- <a-row class="apper" type="flex" align="middle" justify="center">
-      <a-col :xs="20" :sm="20" :md="20" :lg="13" :xl="13" > -->
         <Footer class="apper"/>
-      <!-- </a-col>
-    </a-row> -->
-
   </div>
 </template>
 

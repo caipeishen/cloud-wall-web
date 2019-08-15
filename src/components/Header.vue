@@ -32,31 +32,22 @@
         </a-col>
       </a-row>
       
-      <!-- 广告提示 -->
-      <a-row class="advert" type="flex" align="middle" justify="center">
-        <a-col :xs="20" :sm="20" :md="20" :lg="13" :xl="13" >
-            可以点一下文章评论区的广告支持我一下~
-        </a-col>
-      </a-row>
 
       <!-- 顶部导航 -->
-      <a-row v-show="isShow" type="flex" align="middle" justify="center" style="background:red">
+      <a-row class="fixNavTop" v-show="isShow" type="flex" align="middle" justify="center">
         <a-col :xs="20" :sm="20" :md="20" :lg="13" :xl="13" >
-          <a-affix >
-            <a-row type="flex" align="middle" justify="start"  >
-                <a-col  class="fixNavTitle">网易云热评墙</a-col>
-                <a-col  :class="['nav',anaType==0 ? 'active' : '']" @click="getAnaList(0)">首页</a-col>·
-                <a-col :class="['nav',anaType==1 ? 'active' : '']" @click="getAnaList(1)">热评</a-col>·
-                <a-col :class="['nav',anaType==2 ? 'active' : '']" @click="getAnaList(2)">短句</a-col>·
-                <a-col :class="['nav',anaType==3 ? 'active' : '']" @click="getAnaList(3)">知乎</a-col>·
-                <a-col :class="['nav',anaType==4 ? 'active' : '']" @click="getAnaList(4)">折腾</a-col>·
-                <a-col :class="['nav',anaType==5 ? 'active' : '']" @click="getAnaList(5)">段子</a-col>·
-                <a-col :class="['nav',anaType==6 ? 'active' : '']" @click="getAnaList(6)">关于</a-col>
+            <a-row type="flex" align="middle" justify="space-between"  >
+                <a-col class="fixNavTitle">网易云热评墙</a-col>
+                  <a-col v-show="isPc" :offset="6" :class="['fixNav',anaType==0 ? 'active' : '']" @click="getAnaList(0)">首页</a-col>·
+                  <a-col v-show="isPc" :class="['fixNav',anaType==1 ? 'active' : '']" @click="getAnaList(1)">热评</a-col>·
+                  <a-col v-show="isPc" :class="['fixNav',anaType==2 ? 'active' : '']" @click="getAnaList(2)">短句</a-col>·
+                  <a-col v-show="isPc" :class="['fixNav',anaType==3 ? 'active' : '']" @click="getAnaList(3)">知乎</a-col>·
+                  <a-col v-show="isPc" :class="['fixNav',anaType==4 ? 'active' : '']" @click="getAnaList(4)">折腾</a-col>·
+                  <a-col v-show="isPc" :class="['fixNav',anaType==5 ? 'active' : '']" @click="getAnaList(5)">段子</a-col>·
+                  <a-col v-show="isPc" :class="['fixNav',anaType==6 ? 'active' : '']" @click="getAnaList(6)">关于</a-col>
             </a-row>
-          </a-affix>
         </a-col>
       </a-row>
-
     </div>
 </template>
 
@@ -64,8 +55,14 @@
 
 export default {
   data(){
+    var UA = navigator.userAgent;
+    var ipad = !!(UA.match(/(iPad).*OS\s([\d_]+)/)),
+        isIphone = !!(!ipad && UA.match(/(iPhone\sOS)\s([\d_]+)/)),
+        isAndroid = !!(UA.match(/(Android)\s+([\d.]+)/)),
+        isPC = !(isIphone || isAndroid || ipad);
     return{
-      isShow:true,
+      isPc:isPC,
+      isShow:false,
       anaType:-1
     }
   },
@@ -76,11 +73,12 @@ export default {
   methods:{
     getAnaList(typeId,event){
       this.anaType = typeId;
+      this.$router.push({name:'AnaList'});
       this.$store.dispatch("getAnaList",typeId);
     },
     handleScroll(e) {
         console.log(window.scrollY);
-        if(window.scrollY > 200){
+        if(window.scrollY > 180){
           this.isShow = true;
         }else{
           this.isShow = false;
@@ -103,25 +101,27 @@ export default {
   .nav{
     font-size: 15px;
   }
-  .active{
+  div .active{
     color:blue;
     cursor: pointer;
   }
-  .advert{
-    font-size: 14px;
-    margin: 50px 0 20px 0px;
-    padding: 10px 0;
-    color: gray;
-    border-top: 1px solid gainsboro;
+  .fixNavTop{
+    background: white;
+    z-index: 999;
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    padding: 8px 0px;
     border-bottom: 1px solid gainsboro;
-  }
-  .fixNav{
-    background: red;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1)
   }
   .fixNavTitle{
-    font-size: 21px;
+    font-size: 20px;
     font-weight: bold;
     color:rgba(0,0,0,0.8);
   }
-
+  .fixNav{
+    color:gray;
+    font-size: 15px;
+  }
 </style>
