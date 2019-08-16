@@ -6,8 +6,7 @@ var month = day * 30;
 
 //获取个性化时间差 
 export function getDateDiff(dateStr){
-  //字符串转换为时间戳
-  let dateTimeStamp = Date.parse(dateStr.replace(/-/gi,"/"));
+  let dateTimeStamp = dateStr;// Date.parse(dateStr.replace(/-/gi,"/")); //字符串转换为时间戳
   var now = new Date().getTime();
   var diffValue = now - dateTimeStamp;
   if(diffValue < 0){

@@ -3,7 +3,7 @@
     <!-- 内容的详情 -->
     <div>
         <a-row class="apper" type="flex" align="middle" justify="center">
-            <a-col  :xs="20" :sm="20" :md="20" :lg="13" :xl="13" >
+            <a-col :xs="20" :sm="20" :md="20" :lg="11" :xl="11" >
                 <a-row type="flex" justify="start" class="content">
                     <a-col>
                         {{ana.anaContent}}
@@ -11,7 +11,7 @@
                 </a-row>
                 <a-row type="flex" justify="end" class="form" v-show="ana.anaFrom">
                     <a-col>
-                        <span>---{{ana.anaFrom}}</span>
+                        <span>---&nbsp;&nbsp;{{ana.anaFrom}}</span>
                     </a-col>
                 </a-row>
                 <a-row type="flex" justify="start">
@@ -29,22 +29,20 @@
 </template>
 
 <script>
+
+import { mapState } from 'vuex'
 export default {
     data(){
         return{
-            ana:{}
+            
         }
     },
     mounted(){
-        console.log(this.$route.params);
-        //将传过来的语录对象赋值给 ana属性
-        let ana = this.$route.params;
-        if(ana == null || ana == ''){
-            this.$router.push({name:'home'});
-        }else{
-            this.ana = this.$route.params;
-        }
+        console.log(this.$store.state.ana);
     },
+    computed:mapState({
+        ana:state => state.ana
+    }),
     methods:{
 
     }

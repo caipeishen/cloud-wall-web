@@ -5,11 +5,6 @@
 npm install
 ```
 
-## Project setup
-```
-npm i lib-flexible --save-dev 
-```
-
 ### Compiles and hot-reloads for development
 ```
 npm run serve

@@ -1,7 +1,7 @@
 <template>
   <div>
         <Header/>
-        <router-view class="apper"/>  
+        <router-view class="apper" :key="$route.fullPath"/>  
         <Footer class="apper"/>
   </div>
 </template>
@@ -10,6 +10,7 @@
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
+import { mapActions } from 'vuex'
 export default {
   data(){
     var UA = navigator.userAgent;
@@ -18,13 +19,14 @@ export default {
         isAndroid = !!(UA.match(/(Android)\s+([\d.]+)/)),
         isPC = !(isIphone || isAndroid || ipad);
     return {
-      isPC: isPC
+      isPC: isPC,
     }
   },
   components:{
     Header,Footer
   },
   mounted() {
+    this.getAnaTypeList();
     // 解决IE加 '#'号不跳链接
     if (!!window.ActiveXObject || "ActiveXObject" in window) {
       window.addEventListener(
@@ -38,7 +40,11 @@ export default {
         false
       );
     }
+  },
+  methods:{
+    ...mapActions(['getAnaTypeList']),
   }
+
 };
 </script>
 

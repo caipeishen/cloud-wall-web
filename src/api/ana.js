@@ -5,5 +5,3 @@ import cfg from '@/config/config'
 export const getAnaList = (param) => {
     return request('post', cfg.apiUrl + 'ana/getAnaList',param);
 }
- 
-
