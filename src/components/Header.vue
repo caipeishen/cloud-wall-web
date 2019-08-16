@@ -4,7 +4,7 @@
         <a-col :xs="20" :sm="20" :md="20" :lg="13" :xl="13" >
           <a-row type="flex" align="middle" justify="space-between">
               <a-col class="title" :xs="12" :sm="12" :md="12" :lg="6" :xl="6">
-                网易云热评墙
+                {{$store.state.ana.anaTitle}}
               </a-col>
               <a-col :offset="6" style="margin-top:10px;font-size:14px;" >
                   <a-row type="flex" align="middle" justify="center" :gutter="{ xs: 8, sm: 8, md: 16, lg: 16 }">
@@ -101,6 +101,7 @@ export default {
   methods:{
     anaTypeClick(anaTypeId,event){
       this.anaTypeId = anaTypeId;
+      this.$store.state.ana = {anaTitle:'网易云热评墙'}
       // 这里一定要添加query 不然相同组件,相同路径不会跳转
       this.$router.push({name:'AnaList',"query":{"anaTypeId":anaTypeId}});
     },

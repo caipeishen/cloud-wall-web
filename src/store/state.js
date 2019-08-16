@@ -13,7 +13,7 @@ export default {
         id:'',
         userId:'',
         anaTypeId:'',
-        anaTitle:'',
+        anaTitle:'网易云热评墙',
         anaContent:'',
         anaFrom:'',
         commentNum:'',

@@ -17,8 +17,8 @@
                 <a-row type="flex" justify="start">
                     <a-col :span="24">
                         <a-row type="flex" justify="space-between" align="middle" class="other">
-                            <span class="otherSpan">« 物是人非</span>
-                            <span class="otherSpan">深渊 »</span>
+                            <span class="otherSpan">{{anaUp!=null?'« '+ anaUp.anaTitle:''}}</span>
+                            <span class="otherSpan">{{anaDown!=null?anaDown.anaTitle+' »':''}}</span>
                         </a-row>
                     </a-col>
                 </a-row>
@@ -31,20 +31,32 @@
 <script>
 
 import { mapState } from 'vuex'
+import { getAnaUp,getAnaDown} from '@/api/ana'
+ 
 export default {
     data(){
         return{
-            
+            anaUp:null,
+            anaDown:null,
         }
-    },
-    mounted(){
-        console.log(this.$store.state.ana);
     },
     computed:mapState({
         ana:state => state.ana
     }),
+    mounted(){
+        let _this = this;
+        console.log();
+        getAnaUp({"anaId":_this.ana.id}).then(res=>{
+            console.log(res.data);
+            _this.anaUp = res.data;
+        })
+        getAnaDown({"anaId":_this.ana.id}).then(res=>{
+            console.log(res.data);
+            _this.anaDown = res.data;
+        })
+    },
     methods:{
-
+        
     }
 }
 </script>

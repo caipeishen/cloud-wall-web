@@ -64,12 +64,12 @@ export default {
             anaPageSizeOptions: ['10', '20', '30', '40', '50']
         }
     },
-    mounted(){
-        this.getAnaList({"anaTypeId":this.anaTypeId});
-    },
     computed:mapState({
         anaData: state => state.anaData
     }),
+    mounted(){
+        this.getAnaList({"anaTypeId":this.anaTypeId});
+    },
     methods:{
         ...mapActions(['getAnaList']),
         //这里主要是我们在h5里面直接调方法，默认是调用该vue的，所以在这里声明一个变量，再将我们引用的放到这里面
@@ -77,7 +77,7 @@ export default {
         toAnaDetail(ana){
             //跳到语录详情页，并将当前的语录传过去
             this.$store.state.ana = ana;
-            this.$router.push({name:'AnaDetail'});
+            this.$router.push({name:'AnaDetail',params:{"ana":ana}});
         },
         onChange(current, pageSize){
             this.anaData.current = current;
