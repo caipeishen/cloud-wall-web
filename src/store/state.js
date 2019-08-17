@@ -1,14 +1,7 @@
 
 export default {
     
-    user:{
-        id:'',
-        userName:'',
-        userMobile:'',
-        userSex:'',
-        userSignature:'',
-        createDate:''
-    },
+    user:{id:1},
     ana:{
         id:'',
         userId:'',

@@ -10,11 +10,15 @@ Vue.use(Router)
 export default new Router({
   routes: [ 
     {
-      path: '/AnaList',
+      path: '/',
+      redirect:'AnaList/0'
+    },
+    {
+      path: '/AnaList/:anaTypeId',
       name: 'AnaList',
       component: AnaList
     },{
-      path: '/AnaDetail',
+      path: '/AnaDetail/:anaTypeId/:anaId',
       name: 'AnaDetail',
       component: AnaDetail
     }

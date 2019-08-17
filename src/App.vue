@@ -2,13 +2,11 @@
   <div>
         <Header/>
         <router-view class="apper" :key="$route.fullPath"/>  
-        <Footer class="apper"/>
   </div>
 </template>
 
 <script>
 import Header from '@/components/Header'
-import Footer from '@/components/Footer'
 
 import { mapActions } from 'vuex'
 export default {
@@ -23,10 +21,10 @@ export default {
     }
   },
   components:{
-    Header,Footer
+    Header
   },
-  mounted() {
-    this.getAnaTypeList();
+  created() {
+    this.getAnaTypeList();  
     // 解决IE加 '#'号不跳链接
     if (!!window.ActiveXObject || "ActiveXObject" in window) {
       window.addEventListener(

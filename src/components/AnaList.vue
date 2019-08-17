@@ -1,7 +1,7 @@
 <template>
     <div>
         <a-row class="apper" type="flex" align="middle" justify="center">
-            <a-col  :xs="20" :sm="20" :md="20" :lg="13" :xl="13" >
+            <a-col v-if="anaData!=null" :xs="20" :sm="20" :md="20" :lg="9" :xl="9" >
                 <!-- 列表的一条内容 -->
                 <a-row v-show="anaData!=null" v-for="(ana,index) in anaData.list" :key="index">
                     <a-row type="flex" class="title">
@@ -35,7 +35,7 @@
                             :total="anaData.total"
                             showSizeChanger
                             :pageSize="anaData.pageSize"
-                            v-model="anaData.current"
+                            v-model="anaData.pageNo"
                             @change = "onChange"
                             @showSizeChange="onShowSizeChange"
                         >
@@ -48,6 +48,7 @@
                 </a-row>
             </a-col>
         </a-row>
+        <Footer />
     </div>
     
 </template>
@@ -56,11 +57,15 @@
 import { getDateDiff } from '../utils/date'
 import { setTimeout } from 'timers';
 import { mapState,mapActions } from 'vuex';
+import Footer from '@/components/Footer'
 
 export default {
+    components:{
+        Footer
+    },
     data(){ 
         return{
-            anaTypeId:this.$route.query.anaTypeId||0,
+            anaTypeId:this.$route.params.anaTypeId||0,
             anaPageSizeOptions: ['10', '20', '30', '40', '50']
         }
     },
@@ -77,15 +82,15 @@ export default {
         toAnaDetail(ana){
             //跳到语录详情页，并将当前的语录传过去
             this.$store.state.ana = ana;
-            this.$router.push({name:'AnaDetail',params:{"ana":ana}});
+            this.$router.push({name:'AnaDetail',params:{"anaTypeId":this.anaTypeId,"anaId":ana.id}});
         },
-        onChange(current, pageSize){
-            this.anaData.current = current;
+        onChange(pageNo, pageSize){
+            this.anaData.pageNo = pageNo;
             this.anaData.pageSize = pageSize;
             this.getAnaList({"anaTypeId":this.anaTypeId,"pageNo":this.anaData.pageNo,"pageSize":this.anaData.pageSize});
         },
-        onShowSizeChange(current, pageSize) {
-            this.anaData.current = current;
+        onShowSizeChange(pageNo, pageSize) {
+            this.anaData.pageNo = pageNo;
             this.anaData.pageSize = pageSize;
             this.getAnaList({"anaTypeId":this.anaTypeId,"pageNo":this.anaData.pageNo,"pageSize":this.anaData.pageSize});
         },
