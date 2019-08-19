@@ -265,7 +265,7 @@ export default {
     position: relative;
   }
   .maImg{
-    z-index:999;
+    z-index:998;
     position:absolute;
     background: white;
     top: 155%;

@@ -1,145 +1,170 @@
 <template>
     <div>
-    <a-button type="primary" @click="showDrawer">
-      <a-icon type="plus" /> New account
-    </a-button>
-    <a-drawer
-      title="注册"
-      :width="300"
-      @close="onClose"
-      :visible="visible"
-      :wrapStyle="{height: 'calc(100%)',overflow: 'auto'}"
-    >
-      <a-form :form="form"  @submit="handleSubmit" layout="vertical" hideRequiredMark>
-        <a-row>
-          <a-col :span="24">
-            <a-form-item has-feedback :validate-status="userNameState">
-              <a-input @blur="userNameBlur"
-                v-decorator="['userName', {
-                  rules: [
-                    { required: true, message: '请输入账号' }, 
-                    { validator: compareToUserName, }]
-                }]"
-                placeholder=" 请输入账号"
-              >
-                <a-icon
-                    slot="prefix"
-                    type="user"
-                    style="color: rgba(0,0,0,.25)"
-                />
-              </a-input>
-            </a-form-item>
-          </a-col>
+      <a-button type="primary" @click="showModal">Open Modal with async logic</a-button>
+      <a-modal
+        title="Hi ~_~"
+        :visible="visible"
+        footer="false"
+        @cancel="handleCancel"
+        :confirmLoading="confirmLoading"
+      >
+        <a-row type="flex" algin="middle" justify="center">
+          <a-form :form="form" style="width:70%" @submit="handleSubmit" layout="vertical" hideRequiredMark>
+            <a-row type="flex" algin="middle" justify="center">
+              <a-col :span="24">
+                <a-form-item has-feedback :validate-status="userNameState">
+                  <a-input 
+                    @blur="validateUserNameBlur"
+                    v-decorator="['userName', {
+                      rules: [{ required: true, message: '请输入账号' } ]
+                    }]"
+                    placeholder=" 请输入账号"
+                  >
+                    <a-icon
+                        slot="prefix"
+                        type="user"
+                        style="color: rgba(0,0,0,.25)"
+                    />
+                  </a-input>
+                </a-form-item>
+              </a-col>
+              <a-col :span="24">
+                <a-form-item has-feedback :validate-status="userPasswordState">
+                  <a-input
+                    @blur="validateUserPasswordBlur"
+                    v-decorator="['userPassword', {
+                      rules: [
+                        { required: true, message: '请输入密码' }]
+                      }]"
+                    placeholder=" 请输入密码"
+                  >
+                    <a-icon
+                        slot="prefix"
+                        type="lock"
+                        style="color: rgba(0,0,0,.25)"
+                    />
+                  </a-input>
+                </a-form-item>
+              </a-col>
+              <a-col :span="24">
+                <a-form-item has-feedback :validate-status="userMobileState">
+                  <a-input
+                    @blur="validateUserMobileBlur"
+                    v-decorator="['userMobile', {
+                      rules: [
+                        { required: true, message: '请输入手机号' }]
+                    }]"
+                    placeholder=" 请输入手机号"
+                  >
+                    <a-icon
+                        slot="prefix"
+                        type="mobile"
+                        style="color: rgba(0,0,0,.25)"
+                    />
+                  </a-input>
+                </a-form-item>
+              </a-col>
+            </a-row>
+            <div
+                :style="{
+                position: 'absolute',
+                left: 0,
+                bottom: 0,
+                width: '100%',
+                borderTop: '1px solid #e9e9e9',
+                padding: '10px 20px ',
+                background: '#fff',
+                textAlign: 'right',
+                }"
+            >
+                <a-button :style="{marginRight: '8px'}" @click="handleCancel" >返回</a-button>
+                <a-button type="primary" html-type="submit">注册</a-button>
+            </div>
+          </a-form>
         </a-row>
-        <a-row>
-          <a-col :span="24">
-            <a-form-item has-feedback :validate-status="userPasswordState">
-              <a-input
-                v-decorator="['userPassword', {
-                  rules: [
-                    { required: true, message: '请输入密码' }, 
-                    { validator: compareToUserPassword, }]
-                }]"
-                placeholder=" 请输入密码"
-              >
-                <a-icon
-                    slot="prefix"
-                    type="lock"
-                    style="color: rgba(0,0,0,.25)"
-                />
-              </a-input>
-            </a-form-item>
-          </a-col>
-        </a-row>
-        <a-row>
-          <a-col :span="24">
-            <a-form-item has-feedback :validate-status="userMobileState">
-              <a-input
-                v-decorator="['userMobile', {
-                  rules: [
-                    { required: true, message: '请输入手机号' }, 
-                    { validator: compareToUserMobile, }]
-                }]"
-                placeholder=" 请输入手机号"
-              >
-                <a-icon
-                    slot="prefix"
-                    type="mobile"
-                    style="color: rgba(0,0,0,.25)"
-                />
-              </a-input>
-            </a-form-item>
-          </a-col>
-        </a-row>
-        <div
-            :style="{
-            position: 'absolute',
-            left: 0,
-            bottom: 0,
-            width: '100%',
-            borderTop: '1px solid #e9e9e9',
-            padding: '10px 20px ',
-            background: '#fff',
-            textAlign: 'right',
-            }"
-        >
-            <a-button :style="{marginRight: '8px'}" @click="onClose" >返回</a-button>
-            <a-button type="primary" html-type="submit">注册</a-button>
-        </div>
-      </a-form>
-    </a-drawer>
+      </a-modal>
   </div>
 </template>
 
 <script>
+
+    import { userRegister } from '@/api/user'
     export default {
          data() {
             return {
                 form: this.$form.createForm(this),
                 visible: false,
+                confirmLoading: false,
                 userNameState:"",
                 userPasswordState:"",
                 userMobileState:"",
             }
         },
         methods: {
-            showDrawer() {
-                this.visible = true
+            showModal() {
+              this.visible = true
             },
-            onClose() {
-                this.visible = false
+            handleSubmit(e) {
+              console.log(this.form);
+              this.ModalText = 'The modal will be closed after two seconds';
+              this.confirmLoading = true;
+              setTimeout(() => {
+                this.visible = false;
+                this.confirmLoading = false;
+              }, 2000);
             },
-            handleSubmit (e) {
-                e.preventDefault();
-                this.form.validateFields((err, values) => {
-                    if (!err) {
-                        console.log('Received values of form: ', values);
-                    }
-                });
+            handleCancel(e) {
+              this.visible = false;
+              this.userNameState = "";
+              this.userPasswordState = "";
+              this.userMobileState = "";
+              this.form.resetFields();
             },
-            compareToUserName(rule, value, callback) {
-                this.userNameState='validating'
-                callback('SDGDF');
-                console.log('compareToUserName');
+            validateUserNameBlur(e){
+                const validateUserNameReg = /^\w{3,15}$/
+                if (e.target.value && !validateUserNameReg.test(e.target.value)) {
+                  const arr = [{
+                    message: '只能包含字母、数字和下划线!',
+                    field: 'userName',
+                  }]
+                  this.form.setFields({ userName: { value: e.target.value, errors: arr } })
+                  this.userNameState = "error";
+                }else{
+                  this.userNameState = "success";
+                }
             },
-            compareToUserPassword(){
-                this.userPasswordState='validating'
-                console.log('compareToUserPassword');
+            validateUserPasswordBlur(e) {
+              const validateUserPasswordReg = /^[0-9a-zA-Z\W^]{6,18}$/;
+              //强 ^(?![a-zA-z]+$)(?!\d+$)(?![!@#$%^&*]+$)(?![a-zA-z\d]+$)(?![a-zA-z!@#$%^&*]+$)(?![\d!@#$%^&*]+$)[a-zA-Z\d!@#$%^&*]+$
+              //中 ^(?![a-zA-z]+$)(?!\d+$)(?![!@#$%^&*]+$)[a-zA-Z\d!@#$%^&*]+$
+              //弱 ^(?:\d+|[a-zA-Z]+|[!@#$%^&*]+)$
+              if (e.target.value && !validateUserPasswordReg.test(e.target.value)) {
+                const arr = [{
+                  message: '长度为6-18位的字符!',
+                  field: 'userPassword',
+                }]
+                this.form.setFields({ userPassword: { value: e.target.value, errors: arr } })
+                this.userPasswordState = "error";
+              }else{
+                  this.userPasswordState = "success";
+              }
             },
-            compareToUserMobile(){
-                this.userNameState='validating'
-                console.log('compareToUserMobile');
-            },
-            userNameBlur(){
-                this.userNameState='error';
-                console.log('--------------------');
-                console.log(this.form.setFieldError('userName','啊发士大夫'));
-                console.log('--------------------');
-                
-                //console.log(this.form.setFieldsValue('asdas'));
+            validateUserMobileBlur(e){
+              const validateUserMobileReg = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
+              if (e.target.value && !validateUserMobileReg.test(e.target.value)) {
+                const arr = [{
+                  message: '您输入的手机格式不正确!',
+                  field: 'userMobile',
+                }]
+                this.form.setFields({ userMobile: { value: e.target.value, errors: arr } })
+                this.userMobileState = "error";
+              }else{
+                  this.userMobileState = "success";
+              }
             }
         },
     }
+
 </script>
 
 <style scoped>

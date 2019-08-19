@@ -5,7 +5,7 @@ import Router from 'vue-router'
 const AnaList = () => import('@/components/AnaList.vue');
 const AnaDetail = () => import('@/components/AnaDetail.vue');
 const Login = () => import('@/components/Login.vue');
-const Login2 = () => import('@/components/Login2.vue');
+const Register = () => import('@/components/Register.vue');
 
 Vue.use(Router)
 
@@ -28,9 +28,9 @@ export default new Router({
       name: 'Login',
       component: Login
     },{
-      path: '/Login2',
-      name: 'Login2',
-      component: Login2
+      path: '/Register',
+      name: 'Register',
+      component: Register
     }
   ]
 })
