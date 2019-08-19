@@ -42,7 +42,7 @@
                 </a-row>
             </a-col>
         </a-row>
-        <Footer />
+        <Footer v-if="ana!=null"/>
     </div>
 
 </template>
@@ -71,8 +71,9 @@ export default {
     computed:mapState({
         ana:state => state.ana
     }),
-    created(){
+    mounted(){
         let _this = this;
+        scroll(0,0)
         getAnaUp({"anaId":_this.ana.id}).then(res=>{
             _this.anaUp = res.data;
         })

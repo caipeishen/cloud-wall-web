@@ -52,7 +52,7 @@
         <a-col :xs="20" :sm="20" :md="20" :lg="9" :xl="9" >
             <a-row type="flex" align="middle" justify="space-between"  >
                 <a-col class="fixNavTitle">网易云热评墙</a-col>
-                <a-col v-show="isPc" :xs="20" :sm="10" :md="8" :lg="8"></a-col>
+                <a-col v-show="isPc" :xs="20" :sm="10" :md="5" :lg="5"></a-col>
                 <a-col 
                   v-show="isPc" 
                   v-for="(anaType,index) in anaTypeList" 

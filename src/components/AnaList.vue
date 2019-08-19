@@ -48,7 +48,7 @@
                 </a-row>
             </a-col>
         </a-row>
-        <Footer />
+        <Footer v-if="anaData!=null" />
     </div>
     
 </template>
