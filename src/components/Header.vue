@@ -1,10 +1,10 @@
 <template>
     <div>
       <a-row type="flex" align="middle" justify="center">
-        <a-col :xs="20" :sm="20" :md="20" :lg="9" :xl="9" >
+        <a-col :xs="20" :sm="20" :md="20" :lg="12" :xl="12" >
           <a-row type="flex" align="middle" justify="space-between">
               <a-col class="title">
-                {{$store.state.ana.anaTitle}}
+                {{ana.anaTitle}}
               </a-col>
               <a-col class="nav" style="margin-top:10px;font-size:14px;" >
                   <a-row type="flex" align="middle" justify="space-between" :gutter="{ xs: 10, sm: 10, md: 20, lg: 20 }">
@@ -26,67 +26,57 @@
                   </a-row>
               </a-col>
           </a-row>
-          <a-row type="flex" align="middle" :gutter="{ xs: 10, sm: 10, md: 16, lg: 16 }">
+          <a-row type="flex" align="middle" :gutter="{ xs: 10, sm: 10, md: 13, lg: 13 }">
             <a-col 
               v-for="(anaType,index) in anaTypeList" 
               :key="index" 
-              :class="['fixNav',anaTypeId==anaType.id ? 'active' : '']" 
               @click="anaTypeHandle(anaType.id)"
             >
-              <!-- {{anaType.anaTypeName}} -->
-                {{anaType.anaTypeName}}&nbsp;&nbsp;&nbsp;{{anaTypeList.length-1==index?"":"·"}}
+              <a-row type="flex" align="middle" justify="space-between" :gutter="{ xs: 8, sm: 8, md: 13, lg: 13 }">
+                <a-col :class="['fixNav',anaTypeId==anaType.id ? 'active' : '']">{{anaType.anaTypeName}}</a-col>
+                <a-col>{{anaTypeList.length-1==index?"":"·"}}</a-col>
+              </a-row>
             </a-col>
-             <!--<a-col :class="['fixNav',anaTypeId==0 ? 'active' : '']" @click="anaTypeHandle(0)">首页</a-col>·
-              <a-col :class="['fixNav',anaTypeId==1 ? 'active' : '']" @click="anaTypeHandle(1)">热评</a-col>·
-              <a-col :class="['fixNav',anaTypeId==2 ? 'active' : '']" @click="anaTypeHandle(2)">短句</a-col>·
-              <a-col :class="['fixNav',anaTypeId==3 ? 'active' : '']" @click="anaTypeHandle(3)">知乎</a-col>·
-              <a-col :class="['fixNav',anaTypeId==4 ? 'active' : '']" @click="anaTypeHandle(4)">折腾</a-col>·
-              <a-col :class="['fixNav',anaTypeId==5 ? 'active' : '']" @click="anaTypeHandle(5)">段子</a-col>·
-              <a-col :class="['fixNav',anaTypeId==6 ? 'active' : '']" @click="anaTypeHandle(6)">关于</a-col> -->
           </a-row>
         </a-col>
       </a-row>
 
       <!-- 顶部导航 -->
-      <a-row class="fixNavTop" v-show="isShowNav" type="flex" justify="center">
-        <a-col :xs="20" :sm="20" :md="20" :lg="9" :xl="9" >
+      <a-row v-show="isShowNav" class="fixNavTop" type="flex" justify="center">
+        <a-col :xs="20" :sm="20" :md="20" :lg="12" :xl="12" >
             <a-row type="flex" align="middle" justify="space-between"  >
                 <a-col class="fixNavTitle">网易云热评墙</a-col>
-                <a-col v-show="isPc" :xs="20" :sm="10" :md="5" :lg="5"></a-col>
+                <a-col :xs="1" :sm="1" :md="9" :lg="9"></a-col>
                 <a-col 
                   v-show="isPc" 
                   v-for="(anaType,index) in anaTypeList" 
-                  :key="index" :class="['fixNav',anaTypeId==anaType.id ? 'active' : '']" 
+                  :key="index" 
                   @click="anaTypeHandle(anaType.id)"
                 >
-                    {{anaType.anaTypeName}}&nbsp;&nbsp;&nbsp;&nbsp;{{anaTypeList.length-1==index?"":"·"}}
+                  <a-row type="flex" align="middle" justify="space-between" :gutter="{ xs: 8, sm: 8, md: 10, lg: 10 }">
+                    <a-col :class="['fixNav',anaTypeId==anaType.id ? 'active' : '']" >{{anaType.anaTypeName}}</a-col>
+                    <a-col>{{anaTypeList.length-1==index?"":"·"}}</a-col>
+                  </a-row>
                 </a-col>
-                <!-- <a-col v-show="isPc" :offset="6" :class="['fixNav',anaTypeId==0 ? 'active' : '']" @click="anaTypeHandle(0)">首页</a-col>·
-                <a-col v-show="isPc" :class="['fixNav',anaTypeId==1 ? 'active' : '']" @click="anaTypeHandle(1)">热评</a-col>·
-                <a-col v-show="isPc" :class="['fixNav',anaTypeId==2 ? 'active' : '']" @click="anaTypeHandle(2)">短句</a-col>·
-                <a-col v-show="isPc" :class="['fixNav',anaTypeId==3 ? 'active' : '']" @click="anaTypeHandle(3)">知乎</a-col>·
-                <a-col v-show="isPc" :class="['fixNav',anaTypeId==4 ? 'active' : '']" @click="anaTypeHandle(4)">折腾</a-col>·
-                <a-col v-show="isPc" :class="['fixNav',anaTypeId==5 ? 'active' : '']" @click="anaTypeHandle(5)">段子</a-col>·
-                <a-col v-show="isPc" :class="['fixNav',anaTypeId==6 ? 'active' : '']" @click="anaTypeHandle(6)">关于</a-col> -->
             </a-row>
         </a-col>
       </a-row>
 
       <!-- 广告提示 -->
       <a-row class="advert" type="flex" align="middle" justify="center">
-          <a-col :xs="20" :sm="20" :md="20" :lg="9" :xl="9" >
-            <a-row v-if="$store.state.ana.createDate==null">
+          <a-col :xs="20" :sm="20" :md="20" :lg="12" :xl="12" >
+            <a-row v-if="ana.anaTitle=='网易云热评墙'">
               可以点一下文章评论区的广告支持我一下~
             </a-row>
             <a-row v-else type="flex" align="middle" justify="space-between">
               <a-row type="flex" align="middle" justify="space-between" :gutter="10">
-                <a-col><a-icon type="clock-circle"/>&nbsp;{{dateDiff($store.state.ana.createDate)}}</a-col>
+                <a-col><a-icon type="clock-circle"/>&nbsp;{{dateDiff(ana.createDate)}}</a-col>
                 <a-col>/</a-col>
-                <a-col><a-icon type="align-left"/>&nbsp;{{$store.state.ana.commentNum}}评</a-col>
+                <a-col><a-icon type="align-left"/>&nbsp;{{ana.commentNum}} 评</a-col>
                 <a-col>/</a-col>
-                <a-col>
-                  <a-col v-if="$store.state.ana.isPrize==0"><a-icon type="like"/>&nbsp;{{$store.state.ana.prizeNum}}赞</a-col>
-                  <a-col v-else style="color:coral"><a-icon type="like" theme="filled"/>&nbsp;{{$store.state.ana.prizeNum}}赞</a-col>
+                <a-col @click="prizeHandle()" style="cursor: pointer;">
+                  <a-col v-if="ana.isPrize==0"><a-icon type="like"/>&nbsp;{{ana.prizeNum}} 赞</a-col>
+                  <a-col v-else style="color:coral"><a-icon type="like" theme="filled"/>&nbsp;{{ana.prizeNum}} 赞</a-col>
                 </a-col>
               </a-row>
               <a-row class="ma" type="flex" align="middle" justify="space-between" :gutter="10">
@@ -133,7 +123,6 @@ export default {
       isShowWeChat:false,
       isShowQQ:false,
       isShowNav:false,
-      anaTypeId:0,
       isShowMobile:false,
       isShowPayment:false,
     }
@@ -142,7 +131,11 @@ export default {
     window.addEventListener('scroll', this.handleScroll, true);  // 监听（绑定）滚轮滚动事件
   },
   computed:mapState({
-    anaTypeList: state => state.anaTypeList
+    ana: state => state.ana,
+    user: state => state.user,
+    anaTypeId: state => state.anaTypeId,
+    anaTypeList: state => state.anaTypeList,
+    prizeList: state => state.prizeList
   }),
   methods:{
     dateDiff:getDateDiff,
@@ -156,11 +149,40 @@ export default {
 
     },
     anaTypeHandle(anaTypeId,event){
-      this.anaTypeId = anaTypeId;
       this.$store.state.anaData = null;
+      this.$store.state.anaTypeId = anaTypeId;
       this.$store.state.ana = {anaTitle:'网易云热评墙'}
-      // 这里一定要添加query 不然相同组件,相同路径不会跳转
+      // 这里一定要添加params 不然相同组件,相同路径不会跳转
       this.$router.push({name:'AnaList',"params":{"anaTypeId":anaTypeId}});
+    },
+    prizeHandle(){
+      let _this = this;
+      // 用户未登录
+      if(this.user==null){
+        if(this.ana.isPrize==0){
+          this.ana.isPrize++;
+          this.prizeList.push(this.ana.id);
+          localStorage.setItem("prizeList",JSON.stringify(this.prizeList));
+        }else{
+          this.$notification.open({
+            message: '消息',
+            description: '点多了伤身体~',
+            icon: <a-icon type="frown" style="color: #FAAD14" />,
+          });
+        }
+      // 用户登陆  
+      }else{
+        if(this.ana.isPrize == 0){
+          this.ana.isPrize++;
+          /** 发送数据库请求点赞 */
+        }else{
+          this.$notification.open({
+              message: '消息',
+              description: '点多了伤身体~',
+              icon: <a-icon type="frown" style="color: #FAAD14" />,
+          });
+        }
+      }
     },
     handleScroll(e) {
         //console.log(window.scrollY);
@@ -179,7 +201,7 @@ export default {
 
 <style scoped>
   .title{
-    font-size: 23px;
+    font-size: 24px;
     margin: 50px 0px 30px 0px;
     font-weight: bold;
     color:rgba(0,0,0,0.8);
@@ -204,6 +226,8 @@ export default {
   div .active{
     color:blue;
   }
+
+  /* 固定导航栏 */
   .fixNavTop{
     background: white;
     z-index: 999;
@@ -224,6 +248,7 @@ export default {
     font-size: 15px;
     cursor: pointer;
   }
+  /* 广告 */
   .advert{
       font-size: 14px;
       margin: 50px 0 20px 0px;

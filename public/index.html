@@ -7,12 +7,20 @@
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title>网易云热评墙-年少有为</title>
     <style>
-      .left_buttom::-webkit-scrollbar {
-          width: 1px;
+      .scroll::-webkit-scrollbar {
+          width: 0px;
+      }
+      .scroll::-webkit-scrollbar-thumb {
+          border-radius: 10px;
+          -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.8);
+      }
+      .scroll::-webkit-scrollbar-track {
+          -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+          border-radius: 0;
       }
     </style>
   </head>
-  <body class="left_buttom">
+  <body class="scroll">
     <noscript>
       <strong>We're sorry but antd-demo doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>

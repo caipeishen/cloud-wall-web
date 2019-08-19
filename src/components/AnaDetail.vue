@@ -3,12 +3,13 @@
     <!-- 内容的详情 -->
     <div>
         <a-row class="apper" type="flex" align="middle" justify="center">
-            <a-col :xs="20" :sm="20" :md="20" :lg="9" :xl="9" >
+            <a-col :xs="20" :sm="20" :md="20" :lg="12" :xl="12" >
                 <a-row type="flex" justify="start" class="content">
                     <a-col>
                         {{ana.anaContent}}
                     </a-col>
                 </a-row>
+                <a-row><br/></a-row>
                 <a-row type="flex" justify="end" class="form" v-show="ana.anaFrom">
                     <a-col>
                         <span>---&nbsp;&nbsp;{{ana.anaFrom}}</span>
@@ -64,30 +65,41 @@ export default {
             anaTypeId:this.$route.params.anaTypeId,
             anaUp:null,
             anaDown:null,
-            commentContent:'',
-            commentData:null
+            commentContent:null,
+            commentData:null,
         }
     },
     computed:mapState({
-        ana:state => state.ana
+        ana:state => state.ana,
+        prizeList:state => state.prizeList
     }),
     mounted(){
+        scroll(0,0);//回到顶部
         let _this = this;
-        scroll(0,0)
+        
+        // 上条记录
         getAnaUp({"anaId":_this.ana.id}).then(res=>{
             _this.anaUp = res.data;
         })
+        // 下条记录
         getAnaDown({"anaId":_this.ana.id}).then(res=>{
             _this.anaDown = res.data;
         })
+        // 评论列表
         getCommentList().then(res =>{
             _this.commentData = res.data;
         })
+        // 初始化是否点过赞
+        this.prizeList.find(anaId => {
+            if(anaId == this.ana.id){
+                this.$store.state.ana.isPrize = 1;
+            }
+        });
     },
     methods:{
         toAnaDetail(ana){
             this.$store.state.ana = ana;
-            this.$router.push({name:"AnaDetail",params:{"anaTypeId":this.anaTypeId,"anaId":ana.id}});
+            this.$router.push({name:"AnaDetail",params:{"anaTypeId":this.anaTypeId,"anaId":this.ana.id}});
         },
         commentHandle(){
             let _this = this;
@@ -104,13 +116,19 @@ export default {
                     icon: <a-icon type="frown" style="color: #FAAD14" />,
                 });
             }else{
-                addComment({"anaId":this.$store.state.ana.id,"userId":this.$store.state.user.id,"commentContent":this.commentContent}).then(res =>{
+                addComment({"anaId":this.ana.id,"userId":this.$store.state.user.id,"commentContent":this.commentContent}).then(res =>{
                     console.log(res);
                     if(res.code==200){
                         _this.$notification.open({
                             message: '消息',
                             description: '评论成功',
                             icon: <a-icon type="smile" style="color: #108ee9" />,
+                        });
+                    }else{
+                        _this.$notification.open({
+                            message: '消息',
+                            description: '评论失败',
+                            icon: <a-icon type="smile" style="color: #F5222D" />,
                         });
                     }
                 })
@@ -125,7 +143,7 @@ export default {
 .content{
     margin-bottom: 40px;
     line-height: 32px;
-    margin: 50px 0px 30px;
+    margin: 30px 0px;
     font-size: 16px;
     color: #676F7A;
 }

@@ -3,7 +3,7 @@
         <!-- 底部横线 -->
         <a-row style="border-top:1px solid gainsboro;"></a-row>
         <a-row class="footer" type="flex" align="middle" justify="center" >
-            <a-col :xs="20" :sm="20" :md="20" :lg="9" :xl="9" >
+            <a-col :xs="20" :sm="20" :md="20" :lg="12" :xl="12" >
                 <a-row class="footerTop" type="flex" align="middle" justify="center" :gutter="{ xs: 8, sm: 8, md: 16, lg: 16 }">
                     <a-col >登录</a-col>·
                     <a-col >注册</a-col>·

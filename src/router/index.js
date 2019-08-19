@@ -4,6 +4,8 @@ import Router from 'vue-router'
 // 懒加载
 const AnaList = () => import('@/components/AnaList.vue');
 const AnaDetail = () => import('@/components/AnaDetail.vue');
+const Login = () => import('@/components/Login.vue');
+const Login2 = () => import('@/components/Login2.vue');
 
 Vue.use(Router)
 
@@ -21,6 +23,14 @@ export default new Router({
       path: '/AnaDetail/:anaTypeId/:anaId',
       name: 'AnaDetail',
       component: AnaDetail
+    },{
+      path: '/Login',
+      name: 'Login',
+      component: Login
+    },{
+      path: '/Login2',
+      name: 'Login2',
+      component: Login2
     }
   ]
 })

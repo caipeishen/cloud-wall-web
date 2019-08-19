@@ -1,7 +1,7 @@
 <template>
     <div>
         <a-row class="apper" type="flex" align="middle" justify="center">
-            <a-col v-if="anaData!=null" :xs="20" :sm="20" :md="20" :lg="9" :xl="9" >
+            <a-col v-if="anaData!=null" :xs="20" :sm="20" :md="20" :lg="12" :xl="12" >
                 <!-- 列表的一条内容 -->
                 <a-row v-show="anaData!=null" v-for="(ana,index) in anaData.list" :key="index">
                     <a-row type="flex" class="title">
@@ -40,8 +40,7 @@
                             @showSizeChange="onShowSizeChange"
                         >
                         <template slot='buildOptionText' slot-scope='props'>
-                            <span v-if="props.value!=='50'">{{props.value}}条/页</span>
-                            <span v-if="props.value==='50'">全部</span>
+                            <span v-if="props.value!=='anaData.pages'">{{props.value}}条/页</span>
                         </template>
                         </a-pagination>
                     </template>
@@ -65,11 +64,11 @@ export default {
     },
     data(){ 
         return{
-            anaTypeId:this.$route.params.anaTypeId||0,
-            anaPageSizeOptions: ['10', '20', '30', '40', '50']
+            anaPageSizeOptions: ['10', '20', '30']
         }
     },
     computed:mapState({
+        anaTypeId: state => state.anaTypeId,
         anaData: state => state.anaData
     }),
     mounted(){
@@ -85,12 +84,14 @@ export default {
             this.$router.push({name:'AnaDetail',params:{"anaTypeId":this.anaTypeId,"anaId":ana.id}});
         },
         onChange(pageNo, pageSize){
+            scroll(0,0)
             this.anaData.pageNo = pageNo;
             this.anaData.pageSize = pageSize;
             this.getAnaList({"anaTypeId":this.anaTypeId,"pageNo":this.anaData.pageNo,"pageSize":this.anaData.pageSize});
         },
         onShowSizeChange(pageNo, pageSize) {
-            this.anaData.pageNo = pageNo;
+            scroll(0,0)
+            this.anaData.pageNo = 1;
             this.anaData.pageSize = pageSize;
             this.getAnaList({"anaTypeId":this.anaTypeId,"pageNo":this.anaData.pageNo,"pageSize":this.anaData.pageSize});
         },
