@@ -1,6 +1,8 @@
 <template>
   <div>
+        <!-- 头部 -->
         <Header/>
+        <!-- 主题内容和尾部 -->
         <router-view class="apper" :key="$route.fullPath"/>  
   </div>
 </template>

@@ -5,19 +5,17 @@
         title="Hi ~_~"
         :visible="visible"
         footer="false"
+        width="30%"
         @cancel="handleCancel"
-        :confirmLoading="confirmLoading"
       >
         <a-row type="flex" algin="middle" justify="center">
-          <a-form :form="form" style="width:70%" @submit="handleSubmit" layout="vertical" hideRequiredMark>
+          <a-form :form="form" style="width:60%" @submit="handleSubmit" layout="vertical" hideRequiredMark>
             <a-row type="flex" algin="middle" justify="center">
               <a-col :span="24">
                 <a-form-item has-feedback :validate-status="userNameState">
                   <a-input 
                     @blur="validateUserNameBlur"
-                    v-decorator="['userName', {
-                      rules: [{ required: true, message: '请输入账号' } ]
-                    }]"
+                    v-decorator="['userName']"
                     placeholder=" 请输入账号"
                   >
                     <a-icon
@@ -31,11 +29,9 @@
               <a-col :span="24">
                 <a-form-item has-feedback :validate-status="userPasswordState">
                   <a-input
+                    type="password"
                     @blur="validateUserPasswordBlur"
-                    v-decorator="['userPassword', {
-                      rules: [
-                        { required: true, message: '请输入密码' }]
-                      }]"
+                    v-decorator="['userPassword']"
                     placeholder=" 请输入密码"
                   >
                     <a-icon
@@ -50,10 +46,7 @@
                 <a-form-item has-feedback :validate-status="userMobileState">
                   <a-input
                     @blur="validateUserMobileBlur"
-                    v-decorator="['userMobile', {
-                      rules: [
-                        { required: true, message: '请输入手机号' }]
-                    }]"
+                    v-decorator="['userMobile']"
                     placeholder=" 请输入手机号"
                   >
                     <a-icon
@@ -88,13 +81,12 @@
 
 <script>
 
-    import { userRegister } from '@/api/user'
+    import { userRegister,userNameCheckIsRegister } from '@/api/user'
     export default {
          data() {
             return {
                 form: this.$form.createForm(this),
                 visible: false,
-                confirmLoading: false,
                 userNameState:"",
                 userPasswordState:"",
                 userMobileState:"",
@@ -105,13 +97,48 @@
               this.visible = true
             },
             handleSubmit(e) {
-              console.log(this.form);
-              this.ModalText = 'The modal will be closed after two seconds';
-              this.confirmLoading = true;
-              setTimeout(() => {
-                this.visible = false;
-                this.confirmLoading = false;
-              }, 2000);
+              let _this = this;
+              let flag = true;
+              for(let key in this.form.getFieldsValue()){
+                let value = this.form.getFieldsValue()[key];
+                if(value=='' || value==undefined){
+                  flag = false;
+                  this.$notification.open({
+                      message: '消息',
+                      description: '请填写完整信息!',
+                      icon: <a-icon type="frown" style="color: #FAAD14" />,
+                  });
+                  return;
+                }
+              }
+              for(let key in this.form.getFieldsError()){
+                let value = this.form.getFieldsError()[key];
+                //console.log(key+" : "+value);
+                if(value!='' && value!=undefined){
+                  flag = false;
+                  return;
+                }
+              }
+              if(flag){
+                this.form.validateFields(function(errors,values){
+                  userRegister(values).then((res)=>{
+                    if(res.code==200){
+                        _this.handleCancel();
+                        _this.$notification.open({
+                            message: '消息',
+                            description: '注册成功',
+                            icon: <a-icon type="smile" style="color: #108ee9" />,
+                        });
+                    }else{
+                        _this.$notification.open({
+                            message: '消息',
+                            description: '注册失败',
+                            icon: <a-icon type="smile" style="color: #F5222D" />,
+                        });
+                    }
+                  })
+                })
+              }
             },
             handleCancel(e) {
               this.visible = false;
@@ -121,16 +148,30 @@
               this.form.resetFields();
             },
             validateUserNameBlur(e){
-                const validateUserNameReg = /^\w{3,15}$/
-                if (e.target.value && !validateUserNameReg.test(e.target.value)) {
+                const validateUserNameReg = /^[0-9a-zA-Z\W^]{3,15}$/
+                if (!validateUserNameReg.test(e.target.value)) {
                   const arr = [{
-                    message: '只能包含字母、数字和下划线!',
+                    message: '长度为3-15位的字符!',
                     field: 'userName',
                   }]
-                  this.form.setFields({ userName: { value: e.target.value, errors: arr } })
                   this.userNameState = "error";
+                  this.form.setFields({ userName: { value: e.target.value, errors: arr } })
                 }else{
-                  this.userNameState = "success";
+                  // 验证账号是否被注册
+                  userNameCheckIsRegister({userName:e.target.value}).then((res=>{
+                      console.log(res);
+                      if(res.code==200){
+                        this.userNameState = "success";
+                        this.form.setFields({ userName: { value: e.target.value } })
+                      }else{
+                        const arr = [{
+                          message: res.message,
+                          field: 'userName',
+                        }]
+                        this.userNameState = "error";
+                        this.form.setFields({ userName: { value: e.target.value , errors:arr } })
+                      }
+                  }))
                 }
             },
             validateUserPasswordBlur(e) {
@@ -138,28 +179,30 @@
               //强 ^(?![a-zA-z]+$)(?!\d+$)(?![!@#$%^&*]+$)(?![a-zA-z\d]+$)(?![a-zA-z!@#$%^&*]+$)(?![\d!@#$%^&*]+$)[a-zA-Z\d!@#$%^&*]+$
               //中 ^(?![a-zA-z]+$)(?!\d+$)(?![!@#$%^&*]+$)[a-zA-Z\d!@#$%^&*]+$
               //弱 ^(?:\d+|[a-zA-Z]+|[!@#$%^&*]+)$
-              if (e.target.value && !validateUserPasswordReg.test(e.target.value)) {
+              if (!validateUserPasswordReg.test(e.target.value)) {
                 const arr = [{
                   message: '长度为6-18位的字符!',
                   field: 'userPassword',
                 }]
-                this.form.setFields({ userPassword: { value: e.target.value, errors: arr } })
                 this.userPasswordState = "error";
+                this.form.setFields({ userPassword: { value: e.target.value, errors: arr } })
               }else{
-                  this.userPasswordState = "success";
+                this.userPasswordState = "success";
+                this.form.setFields({ userPassword: { value: e.target.value } })
               }
             },
             validateUserMobileBlur(e){
               const validateUserMobileReg = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
-              if (e.target.value && !validateUserMobileReg.test(e.target.value)) {
+              if (!validateUserMobileReg.test(e.target.value)) {
                 const arr = [{
                   message: '您输入的手机格式不正确!',
                   field: 'userMobile',
                 }]
-                this.form.setFields({ userMobile: { value: e.target.value, errors: arr } })
                 this.userMobileState = "error";
+                this.form.setFields({ userMobile: { value: e.target.value, errors: arr } })
               }else{
-                  this.userMobileState = "success";
+                this.userMobileState = "success";
+                this.form.setFields({ userMobile: { value: e.target.value } })
               }
             }
         },
@@ -168,5 +211,5 @@
 </script>
 
 <style scoped>
-
+  
 </style>

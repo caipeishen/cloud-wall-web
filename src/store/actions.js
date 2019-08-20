@@ -11,12 +11,14 @@ export default {
       commit(GET_ANA_TYPE_LIST,res.data);
     })
   },
-  getAnaList({commit},{anaTypeId,searchName,pageNo,pageSize}){
-    getAnaList({"anaTypeId":anaTypeId,"searchName":searchName,"pageNo":pageNo,"pageSize":pageSize}).then(res=>{
+  //{anaTypeId,searchName,pageNo,pageSize}
+  getAnaList({commit},obj){
+    getAnaList(obj).then(res=>{
       commit(GET_ANA_LIST,res.data);
     })
   },
-  getAnaDetail({commit},{id,lastAna,nextAna}){
-    commit(GET_ANA_DETAIL,{id,lastAna,nextAna});
-  }
+
+
+
+
 }

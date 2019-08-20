@@ -1,23 +1,19 @@
 <template>
     <div>
-      <a-button type="primary" @click="showModal">Open Modal with async logic</a-button>
       <a-modal
         title="Hi ~_~"
-        :visible="visible"
+        :visible="loginVisible"
         footer="false"
+        width="30%"
         @cancel="handleCancel"
-        :confirmLoading="confirmLoading"
       >
         <a-row type="flex" algin="middle" justify="center">
-          <a-form :form="form" style="width:70%" @submit="handleSubmit" layout="vertical" hideRequiredMark>
+          <a-form :form="form" style="width:60%" @submit="handleSubmit" layout="vertical" hideRequiredMark>
             <a-row type="flex" algin="middle" justify="center">
               <a-col :span="24">
                 <a-form-item has-feedback :validate-status="userNameState">
                   <a-input 
-                    @blur="validateUserNameBlur"
-                    v-decorator="['userName', {
-                      rules: [{ required: true, message: '请输入账号' } ]
-                    }]"
+                    v-decorator="['userName']"
                     placeholder=" 请输入账号"
                   >
                     <a-icon
@@ -31,11 +27,8 @@
               <a-col :span="24">
                 <a-form-item has-feedback :validate-status="userPasswordState">
                   <a-input
-                    @blur="validateUserPasswordBlur"
-                    v-decorator="['userPassword', {
-                      rules: [
-                        { required: true, message: '请输入密码' }]
-                      }]"
+                    type="password"
+                    v-decorator="['userPassword']"
                     placeholder=" 请输入密码"
                   >
                     <a-icon
@@ -72,63 +65,71 @@
 
     import { userLogin } from '@/api/user'
     export default {
+        props:{
+          loginVisible:Boolean
+        },
          data() {
             return {
                 form: this.$form.createForm(this),
                 visible: false,
-                confirmLoading: false,
                 userNameState:"",
                 userPasswordState:"",
+                userMobileState:"",
             }
         },
         methods: {
-            showModal() {
-              this.visible = true
-            },
             handleSubmit(e) {
-              console.log(this.form);
-              this.ModalText = 'The modal will be closed after two seconds';
-              this.confirmLoading = true;
-              setTimeout(() => {
-                this.visible = false;
-                this.confirmLoading = false;
-              }, 2000);
+              let _this = this;
+              let flag = true;
+              for(let key in this.form.getFieldsValue()){
+                let value = this.form.getFieldsValue()[key];
+                if(value=='' || value==undefined){
+                  flag = false;
+                  this.$notification.open({
+                      message: '消息',
+                      description: '请填写完整信息!',
+                      icon: <a-icon type="frown" style="color: #FAAD14" />,
+                  });
+                  return;
+                }
+              }
+              for(let key in this.form.getFieldsError()){
+                let value = this.form.getFieldsError()[key];
+                if(value!='' && value!=undefined){
+                  flag = false;
+                  return;
+                }
+              }
+              if(flag){
+                this.form.validateFields(function(errors,values){
+                  userLogin(values).then((res)=>{
+                    if(res.code==200){
+                        _this.handleCancel();
+                        _this.$store.state.user = res.data;
+                        sessionStorage.setItem("userSession",JSON.stringify(res.data));
+                        //把本地的点赞数据放到
+                        _this.$notification.open({
+                            message: '消息',
+                            description: '登陆成功',
+                            icon: <a-icon type="smile" style="color: #108ee9" />,
+                        });
+                    }else{
+                        _this.$notification.open({
+                            message: '消息',
+                            description: '登陆失败',
+                            icon: <a-icon type="smile" style="color: #F5222D" />,
+                        });
+                    }
+                  })
+                })
+              }
             },
             handleCancel(e) {
-              this.visible = false;
+              this.$emit('update:loginVisible',false);//调用父组件去修改数据
+              //this.loginVisible = false;
               this.userNameState = "";
               this.userPasswordState = "";
-              this.userMobileState = "";
               this.form.resetFields();
-            },
-            validateUserNameBlur(e){
-                const validateUserNameReg = /^\w{3,15}$/
-                if (e.target.value && !validateUserNameReg.test(e.target.value)) {
-                  const arr = [{
-                    message: '只能包含字母、数字和下划线!',
-                    field: 'userName',
-                  }]
-                  this.form.setFields({ userName: { value: e.target.value, errors: arr } })
-                  this.userNameState = "error";
-                }else{
-                  this.userNameState = "success";
-                }
-            },
-            validateUserPasswordBlur(e) {
-              const validateUserPasswordReg = /^[0-9a-zA-Z\W^]{6,18}$/;
-              //强 ^(?![a-zA-z]+$)(?!\d+$)(?![!@#$%^&*]+$)(?![a-zA-z\d]+$)(?![a-zA-z!@#$%^&*]+$)(?![\d!@#$%^&*]+$)[a-zA-Z\d!@#$%^&*]+$
-              //中 ^(?![a-zA-z]+$)(?!\d+$)(?![!@#$%^&*]+$)[a-zA-Z\d!@#$%^&*]+$
-              //弱 ^(?:\d+|[a-zA-Z]+|[!@#$%^&*]+)$
-              if (e.target.value && !validateUserPasswordReg.test(e.target.value)) {
-                const arr = [{
-                  message: '长度为6-18位的字符!',
-                  field: 'userPassword',
-                }]
-                this.form.setFields({ userPassword: { value: e.target.value, errors: arr } })
-                this.userPasswordState = "error";
-              }else{
-                  this.userPasswordState = "success";
-              }
             }
         },
     }
@@ -136,5 +137,5 @@
 </script>
 
 <style scoped>
-
+  
 </style>

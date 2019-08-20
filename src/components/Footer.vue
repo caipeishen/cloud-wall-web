@@ -5,7 +5,7 @@
         <a-row class="footer" type="flex" align="middle" justify="center" >
             <a-col :xs="20" :sm="20" :md="20" :lg="12" :xl="12" >
                 <a-row class="footerTop" type="flex" align="middle" justify="center" :gutter="{ xs: 8, sm: 8, md: 16, lg: 16 }">
-                    <a-col >登录</a-col>·
+                    <a-col @click="loginVisible=true">登录</a-col>·
                     <a-col >注册</a-col>·
                     <a-col >友链</a-col>·
                     <a-col >归档</a-col>·
@@ -18,13 +18,29 @@
                 </a-row>
             </a-col>
         </a-row>
+        <a-row>
+            <Login :loginVisible.sync="loginVisible"/>
+        </a-row>
     </div>
 
 </template>
 
 <script>
+import Login from '@/components/Login'
+import ana2 from '@/api/ana2'
 export default {
-
+    components:{
+        Login
+    },
+    data(){
+        return{
+            loginVisible:false,
+            registerVisble:false
+        }
+    },
+    mounted(){
+        ana2.alterNumber(123);
+    }
 }
 </script>
 

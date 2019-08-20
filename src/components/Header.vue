@@ -14,13 +14,13 @@
                     <a-col class="weChat" @click="isShowWeChat=!isShowWeChat,isShowQQ=false">
                       <span><a-icon type="wechat" theme="filled" /></span>
                       <span v-if="isShowWeChat" class="relationImg">
-                        <span><img style="width:130px;margin-bottom:5px;" src="@/assets/微信二维码.jpg"/></span>
+                        <span><img style="width:130px;margin-bottom:5px;" src="@/assets/weChat.jpg"/></span>
                       </span>
                     </a-col>·
                     <a-col class="qq" @click="isShowQQ=!isShowQQ,isShowWeChat=false">
                       <span><a-icon type="qq" /></span>
                       <span v-if="isShowQQ" class="relationImg">
-                        <span><img style="width:130px;margin-bottom:5px;" src="@/assets/QQ二维码.jpg"/></span>
+                        <span><img style="width:130px;margin-bottom:5px;" src="@/assets/qq.jpg"/></span>
                       </span>
                     </a-col>
                   </a-row>
@@ -85,7 +85,7 @@
                   <span v-else>
                     <span style="color:green"><a-icon type="qrcode"/>&nbsp;码</span>
                     <span class="maImg">
-                      <span><img style="width:130px;margin-bottom:5px;" src="@/assets/网易云热评墙二维码.png"/></span>
+                      <span><img style="width:130px;margin-bottom:5px;" src="@/assets/cloud-wall.png"/></span>
                       <span style="color:#65CD91;font-size:11px;">移动设备上继续阅读</span>
                     </span>
                   </span>
@@ -95,7 +95,7 @@
                   <span v-else>
                     <span style="color:coral;"><a-icon type="pay-circle" theme="filled"/>&nbsp;赏</span>
                     <span class="maImg">
-                      <span><img style="width:130px;margin-bottom:5px;" src="@/assets/支付宝收款二维码.jpg"/></span>
+                      <span><img style="width:130px;margin-bottom:5px;" src="@/assets/Payment.jpg"/></span>
                     </span>
                   </span>
                 </a-col>
@@ -141,12 +141,6 @@ export default {
     dateDiff:getDateDiff,
     homeHandle(){
       location.href="http://www.nianshaoyouwei.club";
-    },
-    weChatHandle(){
-
-    },
-    qqHandle(){
-
     },
     anaTypeHandle(anaTypeId,event){
       this.$store.state.anaData = null;
