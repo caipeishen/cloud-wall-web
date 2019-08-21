@@ -4,21 +4,21 @@
             <a-col v-if="anaData!=null" :xs="20" :sm="20" :md="20" :lg="12" :xl="12" >
                 <!-- 列表的一条内容 -->
                 <a-row v-show="anaData!=null" v-for="(ana,index) in anaData.list" :key="index">
-                    <a-row type="flex" class="title">
-                        <a-col @click="toAnaDetail(ana)">
+                    <a-row type="flex">
+                        <a-col @click="toAnaDetail(ana)" class="title">
                             {{ana.anaTitle}}
                         </a-col>
                     </a-row>
-                    <a-row type="flex" class="content" >
-                        <a-col :span="24" v-if="ana.anaContent.length < 100" @click="toAnaDetail(ana)">
+                    <a-row type="flex">
+                        <a-col class="content" @click="toAnaDetail(ana)" v-if="ana.anaContent.length < 100" >
                             {{ana.anaContent}}
                         </a-col>
-                        <a-col :span="24" v-else>
+                        <a-col class="content" @click="toAnaDetail(ana)" v-else>
                             {{ana.anaContent.substring(0,100)}}...
                         </a-col>
                     </a-row>
-                    <a-row type="flex" align="middle" class="footer">
-                        <a-col :span="24">
+                    <a-row type="flex" align="middle" >
+                        <a-col class="footer">
                             <span>{{dateDiff(ana.createDate)}}</span>
                             <span>&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;</span>
                             <span>{{ana.commentNum}} 条评论</span>
