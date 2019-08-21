@@ -63,7 +63,7 @@
 
 <script>
 
-    import { userLogin } from '@/api/user'
+    import user from '@/api/user'
     export default {
         props:{
           loginVisible:Boolean
@@ -102,7 +102,7 @@
               }
               if(flag){
                 this.form.validateFields(function(errors,values){
-                  userLogin(values).then((res)=>{
+                  user.userLogin(values).then((res)=>{
                     if(res.code==200){
                         _this.handleCancel();
                         _this.$store.state.user = res.data;

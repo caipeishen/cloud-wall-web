@@ -9,8 +9,8 @@
 
 <script>
 import Header from '@/components/Header'
-
 import { mapActions } from 'vuex'
+import user from '@/api/user'
 export default {
   data(){
     var UA = navigator.userAgent;
@@ -26,7 +26,17 @@ export default {
     Header
   },
   created() {
-    this.getAnaTypeList();  
+    let visit = JSON.parse(sessionStorage.getItem("visit"));
+    console.log(visit);
+    if(!visit){
+      user.visit().then(res=>{
+        if(res.code==200){
+          console.log('访问成功!');
+          sessionStorage.setItem("visit",true);
+        }
+      });
+    }
+    this.getAnaTypeList();
     // 解决IE加 '#'号不跳链接
     if (!!window.ActiveXObject || "ActiveXObject" in window) {
       window.addEventListener(

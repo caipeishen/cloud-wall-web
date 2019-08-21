@@ -27,7 +27,6 @@
 
 <script>
 import Login from '@/components/Login'
-import ana2 from '@/api/ana2'
 export default {
     components:{
         Login
@@ -39,7 +38,6 @@ export default {
         }
     },
     mounted(){
-        ana2.alterNumber(123);
     }
 }
 </script>

@@ -9,8 +9,8 @@
                             {{ana.anaTitle}}
                         </a-col>
                     </a-row>
-                    <a-row type="flex" class="content">
-                        <a-col :span="24" v-if="ana.anaContent.length < 100">
+                    <a-row type="flex" class="content" >
+                        <a-col :span="24" v-if="ana.anaContent.length < 100" @click="toAnaDetail(ana)">
                             {{ana.anaContent}}
                         </a-col>
                         <a-col :span="24" v-else>
@@ -54,7 +54,6 @@
 
 <script>
 import { getDateDiff } from '../utils/date'
-import { setTimeout } from 'timers';
 import { mapState,mapActions } from 'vuex';
 import Footer from '@/components/Footer'
 
@@ -114,6 +113,7 @@ export default {
     line-height: 32px;
     color: #676F7A;
     font-size: 16px;
+    cursor: pointer;
 } 
 .footer{
     margin: 50px 0px 0px;

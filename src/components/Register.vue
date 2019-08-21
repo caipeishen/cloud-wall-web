@@ -81,7 +81,7 @@
 
 <script>
 
-    import { userRegister,userNameCheckIsRegister } from '@/api/user'
+    import user from '@/api/user'
     export default {
          data() {
             return {
@@ -121,7 +121,7 @@
               }
               if(flag){
                 this.form.validateFields(function(errors,values){
-                  userRegister(values).then((res)=>{
+                  user.userRegister(values).then((res)=>{
                     if(res.code==200){
                         _this.handleCancel();
                         _this.$notification.open({
@@ -158,7 +158,7 @@
                   this.form.setFields({ userName: { value: e.target.value, errors: arr } })
                 }else{
                   // 验证账号是否被注册
-                  userNameCheckIsRegister({userName:e.target.value}).then((res=>{
+                  user.userNameCheckIsRegister({userName:e.target.value}).then((res=>{
                       console.log(res);
                       if(res.code==200){
                         this.userNameState = "success";

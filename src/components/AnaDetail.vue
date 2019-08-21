@@ -53,8 +53,8 @@
 import { mapState } from 'vuex'
 import Footer from '@/components/Footer'
 
-import { getAnaUp,getAnaDown} from '@/api/ana'
-import { getCommentList,addComment} from '@/api/comment'
+import ana from '@/api/ana'
+import comment from '@/api/comment'
  
 export default {
     components:{
@@ -78,15 +78,15 @@ export default {
         let _this = this;
         
         // 上条记录
-        getAnaUp({"anaId":_this.ana.id}).then(res=>{
+        ana.getAnaUp({"anaId":this.ana.id}).then(res=>{
             _this.anaUp = res.data;
         })
         // 下条记录
-        getAnaDown({"anaId":_this.ana.id}).then(res=>{
+        ana.getAnaDown({"anaId":this.ana.id}).then(res=>{
             _this.anaDown = res.data;
         })
         // 评论列表
-        getCommentList().then(res =>{
+        comment.getCommentList({"anaId":this.ana.id}).then(res =>{
             _this.commentData = res.data;
         })
         // 初始化是否点过赞
@@ -116,7 +116,7 @@ export default {
                     icon: <a-icon type="frown" style="color: #FAAD14" />,
                 });
             }else{
-                addComment({"anaId":this.ana.id,"userId":this.$store.state.user.id,"commentContent":this.commentContent}).then(res =>{
+                comment.addComment({"anaId":this.ana.id,"userId":this.$store.state.user.id,"commentContent":this.commentContent}).then(res =>{
                     console.log(res);
                     if(res.code==200){
                         _this.$notification.open({
