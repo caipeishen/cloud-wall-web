@@ -5,12 +5,12 @@
         <a-row class="footer" type="flex" align="middle" justify="center" >
             <a-col :xs="20" :sm="20" :md="20" :lg="12" :xl="12" >
                 <a-row class="footerTop" type="flex" align="middle" justify="center" :gutter="{ xs: 8, sm: 8, md: 16, lg: 16 }">
-                    <a-col @click="loginVisible=true">登录</a-col>·
-                    <a-col >注册</a-col>·
-                    <a-col >友链</a-col>·
-                    <a-col >归档</a-col>·
-                    <a-col >投稿</a-col>·
-                    <a-col >关于</a-col>
+                    <a-col class="login" @click="loginVisible=true">登录</a-col>·
+                    <a-col class="register" @click="registerVisble=true">注册</a-col>·
+                    <a-col class="youLian">友链</a-col>·
+                    <a-col class="guiDang">归档</a-col>·
+                    <a-col class="touGao">投稿</a-col>·
+                    <a-col class="about">关于</a-col>
                 </a-row>
                 <a-row class="footerBottom" type="flex" align="middle" justify="space-between">
                     <a-col>© 2019 网易云热评墙</a-col>
@@ -19,7 +19,10 @@
             </a-col>
         </a-row>
         <a-row>
-            <Login :loginVisible.sync="loginVisible"/>
+            <Login :visible.sync="loginVisible"/>
+        </a-row>
+        <a-row>
+            <Register :visible.sync="registerVisble"/>
         </a-row>
     </div>
 
@@ -27,17 +30,16 @@
 
 <script>
 import Login from '@/components/Login'
+import Register from '@/components/Register'
 export default {
     components:{
-        Login
+        Login,Register
     },
     data(){
         return{
             loginVisible:false,
             registerVisble:false
         }
-    },
-    mounted(){
     }
 }
 </script>
@@ -59,5 +61,8 @@ export default {
     }
     .footerBottom{
         height: 50px;
+    }
+    .login,.register,.youLian,.guiDang,.touGao,.about{
+        cursor: pointer;
     }
 </style>

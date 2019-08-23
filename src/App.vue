@@ -11,6 +11,7 @@
 import Header from '@/components/Header'
 import { mapActions } from 'vuex'
 import user from '@/api/user'
+import { setTimeout } from 'timers';
 export default {
   data(){
     var UA = navigator.userAgent;
@@ -27,14 +28,15 @@ export default {
   },
   created() {
     let visit = JSON.parse(sessionStorage.getItem("visit"));
-    console.log(visit);
     if(!visit){
-      user.visit().then(res=>{
-        if(res.code==200){
-          console.log('访问成功!');
-          sessionStorage.setItem("visit",true);
-        }
-      });
+      setTimeout(function(){
+        user.visit().then(res=>{
+          if(res.code==200){
+            console.log('访问成功!');
+            sessionStorage.setItem("visit",true);
+          }
+        });
+      },5000);
     }
     this.getAnaTypeList();
     // 解决IE加 '#'号不跳链接

@@ -2,7 +2,7 @@
     <div>
       <a-modal
         title="Hi ~_~"
-        :visible="loginVisible"
+        :visible="visible"
         footer="false"
         width="30%"
         @cancel="handleCancel"
@@ -66,7 +66,7 @@
     import user from '@/api/user'
     export default {
         props:{
-          loginVisible:Boolean
+          visible:Boolean
         },
          data() {
             return {
@@ -125,8 +125,8 @@
               }
             },
             handleCancel(e) {
-              this.$emit('update:loginVisible',false);//调用父组件去修改数据
-              //this.loginVisible = false;
+              this.$emit('update:visible',false);//调用父组件去修改数据
+              //this.visible = false;
               this.userNameState = "";
               this.userPasswordState = "";
               this.form.resetFields();

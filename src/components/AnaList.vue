@@ -19,7 +19,7 @@
                     </a-row>
                     <a-row type="flex" align="middle" >
                         <a-col class="footer">
-                            <span>{{dateDiff(ana.createDate)}}</span>
+                            <span>{{getDateDiff(ana.createDate)}}</span>
                             <span>&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;</span>
                             <span>{{ana.commentNum}} 条评论</span>
                             <span>&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;</span>
@@ -76,7 +76,7 @@ export default {
     methods:{
         ...mapActions(['getAnaList']),
         //这里主要是我们在h5里面直接调方法，默认是调用该vue的，所以在这里声明一个变量，再将我们引用的放到这里面
-        dateDiff:getDateDiff,
+        getDateDiff,
         toAnaDetail(ana){
             //跳到语录详情页，并将当前的语录传过去
             this.$store.state.ana = ana;

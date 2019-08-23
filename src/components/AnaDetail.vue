@@ -35,7 +35,52 @@
                         </a-row>
                     </a-col>
                 </a-row>
-                <a-row style="margin:50px 0px">
+                <!-- <a-row v-if="commentData.list!=null">
+                    <p class="commentTitle">99+条回应：{{ana.anaTitle}}</p>
+                    <a-list
+                        class="comment-list"
+                        itemLayout="horizontal"
+                        :dataSource="commentData.list"
+                    >
+                        <a-list-item slot="renderItem" slot-scope="item, index">
+                            <a-comment :author="item.userName" :avatar="item.userName">
+                                
+                                <p slot="content">{{item.commentContent}}</p>
+                                <a-tooltip slot="datetime" :title="item.createDate.format('YYYY-MM-DD HH:mm:ss')">
+                                    <span>{{item.createDate.fromNow()}}</span>
+                                </a-tooltip>
+                            </a-comment>
+                        </a-list-item>
+                    </a-list>
+                </a-row> -->
+                <a-row v-if="commentList!=null && commentList.length!=0">
+                    <p class="commentTitle">{{commentPage.total}}条回应：『　{{ana.anaTitle}}　』 </p>
+                    <a-list
+                        class="comment-list"
+                        itemLayout="horizontal"
+                        :dataSource="commentList"
+                    >
+                        <a-list-item slot="renderItem" slot-scope="item, index">
+                        <a-comment :author="item.userName" :avatar="'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'" >
+                            <p slot="content" style="margin-top:10px">{{item.commentContent}}</p>
+                            <a-tooltip slot="datetime" :title="moment(item.createDate).format('lll')">
+                                <span>{{getDateDiff(item.createDate)}}</span>
+                            </a-tooltip>
+                        </a-comment>
+                        </a-list-item>
+                    </a-list>
+                    <a-row type="flex" align="middle" justify="center" style="margin:20px 0px">
+                        <a-pagination
+                            size="small"
+                            width="100%"
+                            @change="onChange"
+                            v-model="commentPage.pageNo"
+                            :pageSize="commentPage.pageSize"
+                            :total="commentPage.total"
+                        />
+                    </a-row>
+                </a-row>
+                <a-row style="margin:30px 0px 50px">
                     <p style="font-size:21px;font-weight:bold;">发表评论</p>
                     <p style="font-size:15px">评论</p>
                     <p><textarea v-model="commentContent" style="width:100%;height:120px;border:1px solid gainsboro"/></p>
@@ -50,11 +95,15 @@
 
 <script>
 
+import moment from 'moment'
+import { getDateDiff } from '@/utils/date'
 import { mapState } from 'vuex'
+
 import Footer from '@/components/Footer'
 
 import ana from '@/api/ana'
 import comment from '@/api/comment'
+
  
 export default {
     components:{
@@ -62,18 +111,21 @@ export default {
     },
     data(){
         return{
+            moment,
             anaTypeId:this.$route.params.anaTypeId,
             anaUp:null,
             anaDown:null,
+
             commentContent:null,
-            commentData:null,
+            commentList:null,
+            commentPage:{pageNo: 1,pageSize: 10,total:0},
         }
     },
     computed:mapState({
         ana:state => state.ana,
         prizeList:state => state.prizeList
     }),
-    mounted(){
+    created(){
         scroll(0,0);//回到顶部
         let _this = this;
         
@@ -86,9 +138,7 @@ export default {
             _this.anaDown = res.data;
         })
         // 评论列表
-        comment.getCommentList({"anaId":this.ana.id}).then(res =>{
-            _this.commentData = res.data;
-        })
+        this.getCommentList();
         // 初始化是否点过赞
         this.prizeList.find(anaId => {
             if(anaId == this.ana.id){
@@ -97,12 +147,28 @@ export default {
         });
     },
     methods:{
+        getDateDiff,
         toAnaDetail(ana){
             this.$store.state.ana = ana;
             this.$router.push({name:"AnaDetail",params:{"anaTypeId":this.anaTypeId,"anaId":this.ana.id}});
         },
+        getCommentList(){
+            // 评论列表
+            scroll(0,0);//回到顶部
+            let _this = this;
+            comment.getCommentList({"anaId":this.ana.id,"pageNo":this.commentPage.pageNo,"pageSize":this.commentPage.pageSize}).then(res =>{
+                _this.commentList = res.data.list;
+                _this.commentPage.total = res.data.total;
+            })
+        },
+        onChange(pageNo,pageSize){
+            this.commentPage.pageNo = pageNo;
+            this.commentPage.pageSize = pageSize;
+            this.getCommentList();
+        },
         commentHandle(){
             let _this = this;
+            this.$notification.destroy();
             if(!this.commentContent ){
                 this.$notification.open({
                     message: '消息',
@@ -119,6 +185,8 @@ export default {
                 comment.addComment({"anaId":this.ana.id,"userId":this.$store.state.user.id,"commentContent":this.commentContent}).then(res =>{
                     console.log(res);
                     if(res.code==200){
+                        _this.commentContent = '';
+                        _this.getCommentList();
                         _this.$notification.open({
                             message: '消息',
                             description: '评论成功',
@@ -141,7 +209,6 @@ export default {
 <style scoped>
 
 .content{
-    margin-bottom: 40px;
     line-height: 32px;
     margin: 30px 0px;
     font-size: 16px;
@@ -169,5 +236,10 @@ export default {
     padding:8px;
     color:black;
     border:1px solid gainsboro;
+}
+.commentTitle{
+    font-size: 22px;
+    font-weight: bold;
+    margin-top:50px;
 }
 </style>

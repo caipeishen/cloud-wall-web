@@ -1,6 +1,5 @@
 <template>
     <div>
-      <a-button type="primary" @click="showModal">Open Modal with async logic</a-button>
       <a-modal
         title="Hi ~_~"
         :visible="visible"
@@ -83,19 +82,18 @@
 
     import user from '@/api/user'
     export default {
-         data() {
+        props:{
+          visible:Boolean
+        },
+        data() {
             return {
                 form: this.$form.createForm(this),
-                visible: false,
                 userNameState:"",
                 userPasswordState:"",
                 userMobileState:"",
             }
         },
         methods: {
-            showModal() {
-              this.visible = true
-            },
             handleSubmit(e) {
               let _this = this;
               let flag = true;
@@ -141,11 +139,11 @@
               }
             },
             handleCancel(e) {
-              this.visible = false;
               this.userNameState = "";
               this.userPasswordState = "";
               this.userMobileState = "";
               this.form.resetFields();
+              this.$emit("update:visible",false);
             },
             validateUserNameBlur(e){
                 const validateUserNameReg = /^[0-9a-zA-Z\W^]{3,15}$/

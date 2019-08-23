@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div @click="isShowWeChat=false,isShowQQ=false,isShowMobile=false,isShowPayment=false">
       <a-row type="flex" align="middle" justify="center">
         <a-col :xs="20" :sm="20" :md="20" :lg="12" :xl="12" >
           <a-row type="flex" align="middle" justify="space-between">
@@ -11,13 +11,13 @@
                     <a-col class="home" @click="homeHandle()">
                       <a-icon type="home" theme="filled"/>
                     </a-col>·
-                    <a-col class="weChat" @click="isShowWeChat=!isShowWeChat,isShowQQ=false">
+                    <a-col class="weChat" @click.stop="isShowWeChat=!isShowWeChat,isShowQQ=false,isShowMobile=false,isShowPayment=false">
                       <span><a-icon type="wechat" theme="filled" /></span>
                       <span v-if="isShowWeChat" class="relationImg">
                         <span><img style="width:130px;margin-bottom:5px;" src="@/assets/weChat.jpg"/></span>
                       </span>
                     </a-col>·
-                    <a-col class="qq" @click="isShowQQ=!isShowQQ,isShowWeChat=false">
+                    <a-col class="qq" @click.stop="isShowQQ=!isShowQQ,isShowWeChat=false,isShowMobile=false,isShowPayment=false">
                       <span><a-icon type="qq" /></span>
                       <span v-if="isShowQQ" class="relationImg">
                         <span><img style="width:130px;margin-bottom:5px;" src="@/assets/qq.jpg"/></span>
@@ -70,7 +70,7 @@
             </a-row>
             <a-row v-else type="flex" align="middle" justify="space-between">
               <a-row type="flex" align="middle" justify="space-between" :gutter="10">
-                <a-col><a-icon type="clock-circle"/>&nbsp;{{dateDiff(ana.createDate)}}</a-col>
+                <a-col><a-icon type="clock-circle"/>&nbsp;{{getDateDiff(ana.createDate)}}</a-col>
                 <a-col>/</a-col>
                 <a-col><a-icon type="align-left"/>&nbsp;{{ana.commentNum}} 评</a-col>
                 <a-col>/</a-col>
@@ -80,7 +80,7 @@
                 </a-col>
               </a-row>
               <a-row class="ma" type="flex" align="middle" justify="space-between" :gutter="10">
-                <a-col @click="isShowMobile=!isShowMobile,isShowPayment=false">
+                <a-col @click.stop="isShowMobile=!isShowMobile,isShowPayment=false,isShowWeChat=false,isShowQQ=false">
                   <span v-if="!isShowMobile" style="color:green"><a-icon type="scan"/>&nbsp;码</span>
                   <span v-else>
                     <span style="color:green"><a-icon type="qrcode"/>&nbsp;码</span>
@@ -90,7 +90,7 @@
                     </span>
                   </span>
                 </a-col>
-                <a-col @click="isShowPayment=!isShowPayment,isShowMobile=false">
+                <a-col @click.stop="isShowPayment=!isShowPayment,isShowMobile=false,isShowWeChat=false,isShowQQ=false">
                   <span v-if="!isShowPayment" style="color:coral;"><a-icon type="pay-circle"/>&nbsp;赏</span>
                   <span v-else>
                     <span style="color:coral;"><a-icon type="pay-circle" theme="filled"/>&nbsp;赏</span>
@@ -129,6 +129,18 @@ export default {
   },
   mounted(){
     window.addEventListener('scroll', this.handleScroll, true);  // 监听（绑定）滚轮滚动事件
+    // 点击其他地方隐藏二维码，但有一个弊端，就是点击头部的时候，不会隐藏，
+    //又采用了另一种 .stop 事件
+    //给最外层的div加个点击事件 @click="userClick=false"
+　　//给点击的元素上面加上 @click.stop="userClick=!userClick"
+    window.addEventListener('click',e=>{ 
+      if(!this.$el.contains(e.target)) {
+        this.isShowWeChat = false;
+        this.isShowQQ = false;
+        this.isShowMobile = false;
+        this.isShowPayment = false;
+      }
+    });
   },
   computed:mapState({
     ana: state => state.ana,
@@ -138,7 +150,7 @@ export default {
     prizeList: state => state.prizeList
   }),
   methods:{
-    dateDiff:getDateDiff,
+    getDateDiff,
     homeHandle(){
       location.href="http://www.nianshaoyouwei.club";
     },
@@ -158,6 +170,7 @@ export default {
           this.prizeList.push(this.ana.id);
           localStorage.setItem("prizeList",JSON.stringify(this.prizeList));
         }else{
+          this.$notification.destroy();
           this.$notification.open({
             message: '消息',
             description: '点多了伤身体~',
@@ -170,6 +183,7 @@ export default {
           this.ana.isPrize++;
           /** 发送数据库请求点赞 */
         }else{
+          this.$notification.destroy();
           this.$notification.open({
               message: '消息',
               description: '点多了伤身体~',
