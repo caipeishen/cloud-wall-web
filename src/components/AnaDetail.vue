@@ -61,7 +61,7 @@
                         :dataSource="commentList"
                     >
                         <a-list-item slot="renderItem" slot-scope="item, index">
-                        <a-comment :author="item.userName" :avatar="'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'" >
+                        <a-comment :author="item.userNickName" :avatar="'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'" >
                             <p slot="content" style="margin-top:10px">{{item.commentContent}}</p>
                             <a-tooltip slot="datetime" :title="moment(item.createDate).format('lll')">
                                 <span>{{getDateDiff(item.createDate)}}</span>
@@ -130,11 +130,11 @@ export default {
         let _this = this;
         
         // 上条记录
-        ana.getAnaUp({"anaId":this.ana.id}).then(res=>{
+        ana.getAnaUp({"anaId":this.ana.id,"anaTypeId":this.anaTypeId}).then(res=>{
             _this.anaUp = res.data;
         })
         // 下条记录
-        ana.getAnaDown({"anaId":this.ana.id}).then(res=>{
+        ana.getAnaDown({"anaId":this.ana.id,"anaTypeId":this.anaTypeId}).then(res=>{
             _this.anaDown = res.data;
         })
         // 评论列表

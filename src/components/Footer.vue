@@ -5,7 +5,8 @@
         <a-row class="footer" type="flex" align="middle" justify="center" >
             <a-col :xs="20" :sm="20" :md="20" :lg="12" :xl="12" >
                 <a-row class="footerTop" type="flex" align="middle" justify="center" :gutter="{ xs: 8, sm: 8, md: 16, lg: 16 }">
-                    <a-col class="login" @click="loginVisible=true">登录</a-col>·
+                    <a-col v-if="$store.state.user!=null" class="loginOut" @click="loginOut">注销</a-col>
+                    <a-col v-else class="login" @click="loginVisible=true">登录</a-col>·
                     <a-col class="register" @click="registerVisble=true">注册</a-col>·
                     <a-col class="youLian">友链</a-col>·
                     <a-col class="guiDang">归档</a-col>·
@@ -40,6 +41,17 @@ export default {
             loginVisible:false,
             registerVisble:false
         }
+    },
+    methods:{
+        loginOut(){
+            this.$store.state.user = null;
+            sessionStorage.removeItem("userSession");
+            this.$notification.open({
+                message: '消息',
+                description: '注销成功',
+                icon: <a-icon type="smile" style="color: #108ee9" />,
+            });
+        }
     }
 }
 </script>
@@ -62,7 +74,7 @@ export default {
     .footerBottom{
         height: 50px;
     }
-    .login,.register,.youLian,.guiDang,.touGao,.about{
+    .loginOut,.login,.register,.youLian,.guiDang,.touGao,.about{
         cursor: pointer;
     }
 </style>

@@ -8,7 +8,7 @@
         @cancel="handleCancel"
       >
         <a-row type="flex" algin="middle" justify="center">
-          <a-form :form="form" style="width:60%" @submit="handleSubmit" layout="vertical" hideRequiredMark>
+          <a-form :form="form" style="width:60%" layout="vertical" hideRequiredMark>
             <a-row type="flex" algin="middle" justify="center">
               <a-col :span="24">
                 <a-form-item has-feedback :validate-status="userNameState">
@@ -70,7 +70,7 @@
                 }"
             >
                 <a-button :style="{marginRight: '8px'}" @click="handleCancel" >返回</a-button>
-                <a-button type="primary" html-type="submit">注册</a-button>
+                <a-button @keyup.enter="handleSubmit" @click="handleSubmit" type="primary" html-type="submit">注册</a-button>
             </div>
           </a-form>
         </a-row>
@@ -97,6 +97,7 @@
             handleSubmit(e) {
               let _this = this;
               let flag = true;
+              this.$notification.destroy();
               for(let key in this.form.getFieldsValue()){
                 let value = this.form.getFieldsValue()[key];
                 if(value=='' || value==undefined){
@@ -157,7 +158,6 @@
                 }else{
                   // 验证账号是否被注册
                   user.userNameCheckIsRegister({userName:e.target.value}).then((res=>{
-                      console.log(res);
                       if(res.code==200){
                         this.userNameState = "success";
                         this.form.setFields({ userName: { value: e.target.value } })
