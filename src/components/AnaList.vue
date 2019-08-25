@@ -1,9 +1,9 @@
 <template>
     <div>
         <a-row class="apper" type="flex" align="middle" justify="center">
-            <a-col v-if="anaData!=null" :xs="20" :sm="20" :md="20" :lg="12" :xl="12" >
+            <a-col v-if="anaList!=null" :xs="20" :sm="20" :md="20" :lg="12" :xl="12" >
                 <!-- 列表的一条内容 -->
-                <a-row v-show="anaData!=null" v-for="(ana,index) in anaData.list" :key="index">
+                <a-row v-for="(ana,index) in anaList" :key="index">
                     <a-row type="flex">
                         <a-col @click="toAnaDetail(ana)" class="title">
                             {{ana.anaTitle}}
@@ -32,22 +32,22 @@
                     <template >
                         <a-pagination
                             :pageSizeOptions="anaPageSizeOptions"
-                            :total="anaData.total"
+                            :total="anaPage.total"
                             showSizeChanger
-                            :pageSize="anaData.pageSize"
-                            v-model="anaData.pageNo"
+                            :pageSize="anaPage.pageSize"
+                            v-model="anaPage.pageNo"
                             @change = "onChange"
                             @showSizeChange="onShowSizeChange"
                         >
                         <template slot='buildOptionText' slot-scope='props'>
-                            <span v-if="props.value!=='anaData.pages'">{{props.value}}条/页</span>
+                            <span v-if="props.value!=='anaPage.pages'">{{props.value}}条/页</span>
                         </template>
                         </a-pagination>
                     </template>
                 </a-row>
             </a-col>
         </a-row>
-        <Footer v-if="anaData!=null" />
+        <Footer v-if="anaList!=null" />
     </div>
     
 </template>
@@ -63,20 +63,35 @@ export default {
     },
     data(){ 
         return{
+            anaList:null,
+            anaPage:{pageNo: 1,pageSize: 10,total:0},
             anaPageSizeOptions: ['10', '20', '30']
         }
     },
     computed:mapState({
         anaTypeId: state => state.anaTypeId,
-        anaData: state => state.anaData
     }),
     mounted(){
-        this.getAnaList({"anaTypeId":this.anaTypeId});
+        scroll(0,0)
+        this.getAnaList();
     },
     methods:{
-        ...mapActions(['getAnaList']),
-        //这里主要是我们在h5里面直接调方法，默认是调用该vue的，所以在这里声明一个变量，再将我们引用的放到这里面
         getDateDiff,
+        getAnaList(){
+            let _this = this;
+            this.$store.dispatch("getAnaList",{"anaTypeId":this.anaTypeId,"pageNo":this.anaPage.pageNo,"pageSize":this.anaPage.pageSize}).then(res=>{
+                if(res.code==200){
+                    _this.anaList = res.data.list;
+                    _this.anaPage.total = res.data.total;
+                }else{
+                    _this.$notification.open({
+                        message: '消息',
+                        description: '获取数据失败，请刷新页面!',
+                        icon: <a-icon type="smile" style="color: #F5222D" />,
+                    });
+                }
+            });
+        },
         toAnaDetail(ana){
             //跳到语录详情页，并将当前的语录传过去
             this.$store.state.ana = ana;
@@ -84,15 +99,16 @@ export default {
         },
         onChange(pageNo, pageSize){
             scroll(0,0)
-            this.anaData.pageNo = pageNo;
-            this.anaData.pageSize = pageSize;
-            this.getAnaList({"anaTypeId":this.anaTypeId,"pageNo":this.anaData.pageNo,"pageSize":this.anaData.pageSize});
+            let _this = this;
+            this.anaPage.pageNo = pageNo;
+            this.anaPage.pageSize = pageSize;
+            this.getAnaList();
         },
         onShowSizeChange(pageNo, pageSize) {
             scroll(0,0)
-            this.anaData.pageNo = 1;
-            this.anaData.pageSize = pageSize;
-            this.getAnaList({"anaTypeId":this.anaTypeId,"pageNo":this.anaData.pageNo,"pageSize":this.anaData.pageSize});
+            this.anaPage.pageNo = 1;
+            this.anaPage.pageSize = pageSize;
+            this.getAnaList();
         },
     }
 }

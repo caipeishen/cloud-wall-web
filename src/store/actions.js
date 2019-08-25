@@ -12,9 +12,12 @@ export default {
   },
   //{anaTypeId,searchName,pageNo,pageSize}
   getAnaList({commit},obj){
-    ana.getAnaList(obj).then(res=>{
-      commit(GET_ANA_LIST,res.data);
-    })
+    return new Promise((resolve, reject) => { 
+      ana.getAnaList(obj).then(res=>{
+        resolve(res);
+      })
+    });
+    
   },
 
 

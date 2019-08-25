@@ -154,7 +154,6 @@ export default {
         },
         getCommentList(){
             // 评论列表
-            scroll(0,0);//回到顶部
             let _this = this;
             comment.getCommentList({"anaId":this.ana.id,"pageNo":this.commentPage.pageNo,"pageSize":this.commentPage.pageSize}).then(res =>{
                 _this.commentList = res.data.list;

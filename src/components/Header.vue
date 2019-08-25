@@ -155,7 +155,7 @@ export default {
       location.href="http://www.nianshaoyouwei.club";
     },
     anaTypeHandle(anaTypeId,event){
-      this.$store.state.anaData = null;
+      //this.$store.state.anaData = null;
       this.$store.state.anaTypeId = anaTypeId;
       this.$store.state.ana = {anaTitle:'网易云热评墙'}
       // 这里一定要添加params 不然相同组件,相同路径不会跳转
