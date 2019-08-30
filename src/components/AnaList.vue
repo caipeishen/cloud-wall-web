@@ -28,14 +28,14 @@
                     </a-row>
                     <a-row type="flex" align="middle" class="bottom"></a-row>
                 </a-row>
-                <a-row style="margin:60px 0px 50px" type="flex" align="middle" justify="center" >
-                    <template >
+                <a-row v-if="anaList.length!=0" style="margin:60px 0px 50px" type="flex" align="middle" justify="center" >
+                    <a-col :span="24" type="flex" align="middle" justify="center" >
                         <a-pagination
                             :pageSizeOptions="anaPageSizeOptions"
                             :total="anaPage.total"
                             showSizeChanger
                             :pageSize="anaPage.pageSize"
-                            v-model="anaPage.pageNo"
+                            v-model="anaPage.current"
                             @change = "onChange"
                             @showSizeChange="onShowSizeChange"
                         >
@@ -43,11 +43,16 @@
                             <span v-if="props.value!=='anaPage.pages'">{{props.value}}条/页</span>
                         </template>
                         </a-pagination>
-                    </template>
+                    </a-col>
+                </a-row>
+                <a-row v-else style="margin:30px 0px 50px" type="flex" align="middle" justify="center" >
+                    <a-col :span="24" type="flex" align="middle" justify="center" >
+                        暂无内容
+                    </a-col>
                 </a-row>
             </a-col>
         </a-row>
-        <Footer v-if="anaList!=null" />
+        <Footer v-show="anaList.length!=0"/>
     </div>
     
 </template>
@@ -64,7 +69,7 @@ export default {
     data(){ 
         return{
             anaList:null,
-            anaPage:{pageNo: 1,pageSize: 10,total:0},
+            anaPage:{current: 1,pageSize: 10,total:0},
             anaPageSizeOptions: ['10', '20', '30']
         }
     },
@@ -79,7 +84,7 @@ export default {
         getDateDiff,
         getAnaList(){
             let _this = this;
-            this.$store.dispatch("getAnaList",{"anaTypeId":this.anaTypeId,"pageNo":this.anaPage.pageNo,"pageSize":this.anaPage.pageSize}).then(res=>{
+            this.$store.dispatch("getAnaList",{"userId":this.$store.state.user==null?0:this.$store.state.user.id,"anaTypeId":this.anaTypeId,"current":this.anaPage.current,"pageSize":this.anaPage.pageSize}).then(res=>{
                 if(res.code==200){
                     _this.anaList = res.data.list;
                     _this.anaPage.total = res.data.total;
@@ -97,16 +102,16 @@ export default {
             this.$store.state.ana = ana;
             this.$router.push({name:'AnaDetail',params:{"anaTypeId":this.anaTypeId,"anaId":ana.id}});
         },
-        onChange(pageNo, pageSize){
+        onChange(current, pageSize){
             scroll(0,0)
             let _this = this;
-            this.anaPage.pageNo = pageNo;
+            this.anaPage.current = current;
             this.anaPage.pageSize = pageSize;
             this.getAnaList();
         },
-        onShowSizeChange(pageNo, pageSize) {
+        onShowSizeChange(current, pageSize) {
             scroll(0,0)
-            this.anaPage.pageNo = 1;
+            this.anaPage.current = 1;
             this.anaPage.pageSize = pageSize;
             this.getAnaList();
         },

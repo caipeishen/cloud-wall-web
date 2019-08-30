@@ -10,7 +10,6 @@ import App from "./App";
 import store from './store'
 import router from './router'
 
-
 Vue.use(Antd);
 
 router.beforeEach((to, from, next) => {

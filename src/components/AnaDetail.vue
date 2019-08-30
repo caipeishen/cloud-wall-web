@@ -69,12 +69,13 @@
                         </a-comment>
                         </a-list-item>
                     </a-list>
-                    <a-row type="flex" align="middle" justify="center" style="margin:20px 0px">
+                    <a-row v-show="commentList!=null" type="flex" align="middle" justify="center" style="margin:20px 0px">
                         <a-pagination
+                            simple
                             size="small"
                             width="100%"
                             @change="onChange"
-                            v-model="commentPage.pageNo"
+                            v-model="commentPage.current"
                             :pageSize="commentPage.pageSize"
                             :total="commentPage.total"
                         />
@@ -112,36 +113,45 @@ export default {
     data(){
         return{
             moment,
+            anaId:this.$route.params.anaId,
             anaTypeId:this.$route.params.anaTypeId,
             anaUp:null,
             anaDown:null,
 
             commentContent:null,
             commentList:null,
-            commentPage:{pageNo: 1,pageSize: 10,total:0},
+            commentPage:{current: 1,pageSize: 10,total:0},
         }
     },
     computed:mapState({
         ana:state => state.ana,
+        user:state => state.user,
         prizeList:state => state.prizeList
     }),
-    created(){
+    mounted(){
         scroll(0,0);//回到顶部
         let _this = this;
-        
+        if(this.ana.anaTitle=='网易云热评墙'){
+            console.log('加载数据');
+            ana.getAnaInfo({"userId":this.user==null?0:this.user.id,"anaId":this.anaId,"anaTypeId":this.anaTypeId}).then(res=>{
+                _this.$store.state.ana = res.data;
+            })
+        }
         // 上条记录
-        ana.getAnaUp({"anaId":this.ana.id,"anaTypeId":this.anaTypeId}).then(res=>{
+        ana.getAnaUp({"userId":this.user==null?0:this.user.id,"anaId":this.anaId,"anaTypeId":this.anaTypeId}).then(res=>{
             _this.anaUp = res.data;
         })
         // 下条记录
-        ana.getAnaDown({"anaId":this.ana.id,"anaTypeId":this.anaTypeId}).then(res=>{
+        ana.getAnaDown({"userId":this.user==null?0:this.user.id,"anaId":this.anaId,"anaTypeId":this.anaTypeId}).then(res=>{
             _this.anaDown = res.data;
         })
         // 评论列表
         this.getCommentList();
         // 初始化是否点过赞
-        this.prizeList.find(anaId => {
-            if(anaId == this.ana.id){
+        console.log(this.anaId);
+        console.log(this.prizeList);
+        this.prizeList.find(id => {
+            if(id == this.anaId){
                 this.$store.state.ana.isPrize = 1;
             }
         });
@@ -155,33 +165,33 @@ export default {
         getCommentList(){
             // 评论列表
             let _this = this;
-            comment.getCommentList({"anaId":this.ana.id,"pageNo":this.commentPage.pageNo,"pageSize":this.commentPage.pageSize}).then(res =>{
+            comment.getCommentList({"anaId":this.anaId,"current":this.commentPage.current,"pageSize":this.commentPage.pageSize}).then(res =>{
                 _this.commentList = res.data.list;
                 _this.commentPage.total = res.data.total;
             })
         },
-        onChange(pageNo,pageSize){
-            this.commentPage.pageNo = pageNo;
+        onChange(current,pageSize){
+            this.commentPage.current = current;
             this.commentPage.pageSize = pageSize;
             this.getCommentList();
         },
         commentHandle(){
             let _this = this;
             this.$notification.destroy();
-            if(!this.commentContent ){
+            if(!this.commentContent){
                 this.$notification.open({
                     message: '消息',
                     description: '请输入评论内容',
                     icon: <a-icon type="frown" style="color: #FAAD14" />,
                 });
-            }else if(this.$store.state.user==null){
+            }else if(this.user==null){
                 this.$notification.open({
                     message: '消息',
                     description: '请先登录，再进行评论!',
                     icon: <a-icon type="frown" style="color: #FAAD14" />,
                 });
             }else{
-                comment.addComment({"anaId":this.ana.id,"userId":this.$store.state.user.id,"commentContent":this.commentContent}).then(res =>{
+                comment.anaComment({"anaId":this.ana.id,"userId":this.user.id,"commentContent":this.commentContent}).then(res =>{
                     console.log(res);
                     if(res.code==200){
                         _this.commentContent = '';

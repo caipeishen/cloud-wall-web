@@ -1,7 +1,7 @@
 <template>
     <div>
       <a-modal
-        title="Hi ~_~"
+        title="Hi ~_~" 
         :visible="visible"
         footer="false"
         width="30%"
@@ -107,6 +107,14 @@
                         _this.handleCancel();
                         _this.$store.state.user = res.data;
                         sessionStorage.setItem("userSession",JSON.stringify(res.data));
+                        let prizeList = JSON.parse(localStorage.getItem("prizeList"));
+                        for(let prize of prizeList){
+                          prize.userId = _this.$store.state.user.id;
+                        }
+                        localStorage.setItem("prizeList",JSON.stringify(prizeList));
+                        user.userPrizeList(JSON.parse(localStorage.getItem("prizeList"))).then(res=>{
+                        });
+                        localStorage.removeItem("prizeList");
                         //把本地的点赞数据放到
                         _this.$notification.open({
                             message: '消息',

@@ -11,7 +11,7 @@
 import Header from '@/components/Header'
 import { mapActions } from 'vuex'
 import user from '@/api/user'
-import { setTimeout } from 'timers';
+
 export default {
   data(){
     var UA = navigator.userAgent;
@@ -26,7 +26,9 @@ export default {
   components:{
     Header
   },
-  created() {
+  mounted() {
+    // 请求分类信息
+    this.$store.dispatch("getAnaTypeList");
     let visit = JSON.parse(sessionStorage.getItem("visit"));
     if(!visit){
       setTimeout(function(){
@@ -38,7 +40,6 @@ export default {
         });
       },5000);
     }
-    this.getAnaTypeList();
     // 解决IE加 '#'号不跳链接
     if (!!window.ActiveXObject || "ActiveXObject" in window) {
       window.addEventListener(
@@ -52,11 +53,9 @@ export default {
         false
       );
     }
-  },
-  methods:{
-    ...mapActions(['getAnaTypeList']),
-  }
 
+  }
+ 
 };
 </script>
 
