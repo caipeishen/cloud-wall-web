@@ -69,7 +69,7 @@
                         </a-comment>
                         </a-list-item>
                     </a-list>
-                    <a-row v-show="commentList!=null" type="flex" align="middle" justify="center" style="margin:20px 0px">
+                    <!-- <a-row v-show="commentList!=null" type="flex" align="middle" justify="center" style="margin:20px 0px">
                         <a-pagination
                             simple
                             size="small"
@@ -79,7 +79,7 @@
                             :pageSize="commentPage.pageSize"
                             :total="commentPage.total"
                         />
-                    </a-row>
+                    </a-row> -->
                 </a-row>
                 <a-row style="margin:30px 0px 50px">
                     <p style="font-size:21px;font-weight:bold;">发表评论</p>

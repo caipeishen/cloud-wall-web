@@ -28,7 +28,7 @@
                     </a-row>
                     <a-row type="flex" align="middle" class="bottom"></a-row>
                 </a-row>
-                <a-row v-if="anaList.length!=0" style="margin:60px 0px 50px" type="flex" align="middle" justify="center" >
+                <a-row v-if="anaList!=null && anaList!=''" style="margin:60px 0px 50px" type="flex" align="middle" justify="center" >
                     <a-col :span="24" type="flex" align="middle" justify="center" >
                         <a-pagination
                             :pageSizeOptions="anaPageSizeOptions"
@@ -52,7 +52,7 @@
                 </a-row>
             </a-col>
         </a-row>
-        <Footer v-show="anaList.length!=0"/>
+        <Footer v-show="anaList!=null && anaList!=''"/>
     </div>
     
 </template>
@@ -68,14 +68,12 @@ export default {
     },
     data(){ 
         return{
+            anaTypeId:this.$route.params.anaTypeId,
             anaList:null,
             anaPage:{current: 1,pageSize: 10,total:0},
             anaPageSizeOptions: ['10', '20', '30']
         }
     },
-    computed:mapState({
-        anaTypeId: state => state.anaTypeId,
-    }),
     mounted(){
         scroll(0,0)
         this.getAnaList();
