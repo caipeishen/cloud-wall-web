@@ -5,13 +5,12 @@
         <a-row class="footer" type="flex" align="middle" justify="center" >
             <a-col :xs="20" :sm="20" :md="20" :lg="12" :xl="12" >
                 <a-row class="footerTop" type="flex" align="middle" justify="center" :gutter="{ xs: 12, sm: 12, md: 16, lg: 16 }">
-                    <a-col v-if="$store.state.user!=null" class="loginOut" @click="loginOut">注销</a-col>
+                    <a-col v-if="user!=null" class="loginOut" @click="loginOut">退出</a-col>
                     <a-col v-else class="login" @click="loginVisible=true">登录</a-col>·
-                    <a-col class="register" @click="registerVisble=true">注册</a-col>·
-                    <a-col class="youLian">友链</a-col>·
-                    <a-col class="guiDang">归档</a-col>·
-                    <a-col class="touGao">投稿</a-col>·
-                    <a-col class="about">关于</a-col>
+                    <a-col class="register" @click="registerVisible=true">注册</a-col>·
+                    <a-col class="mine" @click="mineHandle"> 我 </a-col>·
+                    <a-col class="publish" @click="publishHandle">发布</a-col>·
+                    <a-col class="youLian" @click="homeHandle">友链</a-col>
                 </a-row>
                 <a-row class="footerBottom" type="flex" align="middle" justify="space-between">
                     <a-col>© 2019 网易云热评墙</a-col>
@@ -23,7 +22,13 @@
             <Login :visible.sync="loginVisible"/>
         </a-row>
         <a-row>
-            <Register :visible.sync="registerVisble"/>
+            <Register :visible.sync="registerVisible"/>
+        </a-row>
+        <a-row>
+            <Mine :visible.sync="mineVisible"/>
+        </a-row>
+        <a-row>
+            <Publish :visible.sync="publishVisible"/>
         </a-row>
     </div>
 
@@ -32,23 +37,58 @@
 <script>
 import Login from '@/components/Login'
 import Register from '@/components/Register'
+import Mine from '@/components/Mine'
+import Publish from '@/components/Publish'
+
+import { mapState } from 'vuex'
+import myStorage from '@/utils/myStorage'
+
 export default {
     components:{
-        Login,Register
+        Login,Register,Mine,Publish
     },
     data(){
         return{
             loginVisible:false,
-            registerVisble:false
+            registerVisible:false,
+            mineVisible:false,
+            publishVisible:false,
         }
     },
+    computed:mapState({
+        user : state => state.user
+    }),
     methods:{
+        mineHandle(){
+            if(this.user==null){
+                this.$notification.destroy();
+                this.$notification.open({
+                    message: '消息',
+                    description: '请先登陆',
+                    icon: <a-icon type="smile" style="color: #FAAD14" />,
+                });
+            }else{
+                this.mineVisible=true
+            }
+        },
+        publishHandle(){
+            if(this.user==null){
+                this.$notification.destroy();
+                this.$notification.open({
+                    message: '消息',
+                    description: '请先登陆',
+                    icon: <a-icon type="smile" style="color: #FAAD14" />,
+                });
+            }else{
+                this.publishVisible=true
+            }
+        },
         out(){
             this.$store.state.user = null;
-            sessionStorage.removeItem("userSession");
+            myStorage.removeUserSession();
             this.$notification.open({
                 message: '消息',
-                description: '注销成功',
+                description: '退出登录',
                 icon: <a-icon type="smile" style="color: #108ee9" />,
             });
         },
@@ -59,7 +99,7 @@ export default {
                 okText:'确定',
                 cancelText:'取消',
                 title: '操作提示信息?',
-                content: h => <div><p>确定注销账号吗?</p></div>,
+                content: h => <div><p>确定退出登录吗?</p></div>,
                 onOk() {
                     _this.out();
                 },
@@ -68,7 +108,23 @@ export default {
                 },
                 class: 'test',
             });
-        }
+        },
+        homeHandle(){
+            this.$confirm({
+                width:500,
+                okText:'确定',
+                cancelText:'取消',
+                title: '操作提示信息?',
+                content: h => <div><p>确定跳转到主页吗?</p></div>,
+                onOk() {
+                    location.href="http://www.nianshaoyouwei.club";
+                },
+                onCancel() {
+                    //console.log('Cancel');
+                },
+                class: 'test',
+            });
+        },
     }
 }
 </script>
@@ -91,7 +147,7 @@ export default {
     .footerBottom{
         height: 50px;
     }
-    .loginOut,.login,.register,.youLian,.guiDang,.touGao,.about{
+    .loginOut,.login,.register,.publish,.youLian,.mine{
         cursor: pointer;
     }
 </style>

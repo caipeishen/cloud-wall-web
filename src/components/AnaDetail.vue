@@ -2,6 +2,9 @@
     
     <!-- 内容的详情 -->
     <div>
+        <a-row>
+            <Header/>
+        </a-row>
         <a-row class="apper" type="flex" align="middle" justify="center">
             <a-col :xs="20" :sm="20" :md="20" :lg="12" :xl="12" >
                 <a-row type="flex" justify="start" class="content">
@@ -54,14 +57,14 @@
                     </a-list>
                 </a-row> -->
                 <a-row v-if="commentList!=null && commentList.length!=0">
-                    <p class="commentTitle">{{commentPage.total}}条回应：『　{{ana.anaTitle}}　』 </p>
+                    <p class="commentTitle">{{commentPage.total}}条回应： </p>
                     <a-list
                         class="comment-list"
                         itemLayout="horizontal"
                         :dataSource="commentList"
                     >
                         <a-list-item slot="renderItem" slot-scope="item, index">
-                        <a-comment :author="item.userNickName" :avatar="'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'" >
+                        <a-comment :author="item.userNickName" size="large" icon="user" >
                             <p slot="content" style="margin-top:10px">{{item.commentContent}}</p>
                             <a-tooltip slot="datetime" :title="moment(item.createDate).format('lll')">
                                 <span>{{getDateDiff(item.createDate)}}</span>
@@ -89,7 +92,9 @@
                 </a-row>
             </a-col>
         </a-row>
-        <Footer v-if="ana!=null"/>
+        <a-row class="apper">
+            <Footer v-if="ana!=null"/>
+        </a-row>
     </div>
 
 </template>
@@ -100,15 +105,17 @@ import moment from 'moment'
 import { getDateDiff } from '@/utils/date'
 import { mapState } from 'vuex'
 
+import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
 import ana from '@/api/ana'
 import comment from '@/api/comment'
 
+import myStorage from '@/utils/myStorage'
  
 export default {
     components:{
-        Footer
+        Header,Footer
     },
     data(){
         return{
@@ -125,14 +132,12 @@ export default {
     },
     computed:mapState({
         ana:state => state.ana,
-        user:state => state.user,
-        prizeList:state => state.prizeList
+        user:state => state.user
     }),
     mounted(){
         scroll(0,0);//回到顶部
         let _this = this;
         if(this.ana.anaTitle=='网易云热评墙'){
-            console.log('加载数据');
             ana.getAnaInfo({"userId":this.user==null?0:this.user.id,"anaId":this.anaId,"anaTypeId":this.anaTypeId}).then(res=>{
                 _this.$store.state.ana = res.data;
             })
@@ -148,9 +153,7 @@ export default {
         // 评论列表
         this.getCommentList();
         // 初始化是否点过赞
-        console.log(this.anaId);
-        console.log(this.prizeList);
-        this.prizeList.find(id => {
+        myStorage.getPrizeList().find(id => {
             if(id == this.anaId){
                 this.$store.state.ana.isPrize = 1;
             }
@@ -192,7 +195,6 @@ export default {
                 });
             }else{
                 comment.anaComment({"anaId":this.ana.id,"userId":this.user.id,"commentContent":this.commentContent}).then(res =>{
-                    console.log(res);
                     if(res.code==200){
                         _this.commentContent = '';
                         _this.getCommentList();

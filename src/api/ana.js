@@ -3,6 +3,10 @@ import cfg from '@/config/config'
 
 const ana = { }
 
+// 发布语录
+ana.anaPublic = (param) => {
+    return request('post', cfg.apiUrl + 'ana/anaPublic',param);
+}
 // 获取语录信息
 ana.getAnaInfo = (param) => {
     return request('post', cfg.apiUrl + 'ana/getAnaInfo',param);

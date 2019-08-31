@@ -1,14 +1,11 @@
 <template>
   <div>
-        <!-- 头部 -->
-        <Header/>
-        <!-- 主题内容和尾部 -->
-        <router-view class="apper" :key="$route.fullPath"/>  
+        <!-- 头部、主题内容、尾部 -->
+        <router-view :key="$route.fullPath"/>  
   </div>
 </template>
 
 <script>
-import Header from '@/components/Header'
 import { mapActions } from 'vuex'
 import user from '@/api/user'
 
@@ -22,9 +19,6 @@ export default {
     return {
       isPC: isPC,
     }
-  },
-  components:{
-    Header
   },
   mounted() {
     // 请求分类信息
@@ -59,7 +53,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
   .apper{
     animation: apper 0.75s;
   }

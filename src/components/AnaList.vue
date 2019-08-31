@@ -1,5 +1,8 @@
 <template>
     <div>
+        <a-row>
+            <Header />
+        </a-row>
         <a-row class="apper" type="flex" align="middle" justify="center">
             <a-col v-if="anaList!=null" :xs="20" :sm="20" :md="20" :lg="12" :xl="12" >
                 <!-- 列表的一条内容 -->
@@ -52,7 +55,9 @@
                 </a-row>
             </a-col>
         </a-row>
-        <Footer v-show="anaList!=null && anaList!=''"/>
+        <a-row>
+            <Footer class="apper" v-show="anaList!=null && anaList!=''"/>
+        </a-row>
     </div>
     
 </template>
@@ -60,11 +65,13 @@
 <script>
 import { getDateDiff } from '../utils/date'
 import { mapState,mapActions } from 'vuex';
+import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import ana from '@/api/ana'
 
 export default {
     components:{
-        Footer
+        Header,Footer
     },
     data(){ 
         return{
@@ -82,7 +89,8 @@ export default {
         getDateDiff,
         getAnaList(){
             let _this = this;
-            this.$store.dispatch("getAnaList",{"userId":this.$store.state.user==null?0:this.$store.state.user.id,"anaTypeId":this.anaTypeId,"current":this.anaPage.current,"pageSize":this.anaPage.pageSize}).then(res=>{
+            setTimeout(() => {
+                ana.getAnaList({"userId":this.$store.state.user==null?0:this.$store.state.user.id,"anaTypeId":this.anaTypeId,"current":this.anaPage.current,"pageSize":this.anaPage.pageSize}).then(res=>{
                 if(res.code==200){
                     _this.anaList = res.data.list;
                     _this.anaPage.total = res.data.total;
@@ -94,6 +102,8 @@ export default {
                     });
                 }
             });
+            }, 100);
+            
         },
         toAnaDetail(ana){
             //跳到语录详情页，并将当前的语录传过去

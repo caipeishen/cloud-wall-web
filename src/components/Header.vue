@@ -113,6 +113,7 @@
 <script>
 import { mapState } from 'vuex'
 import { getDateDiff } from '@/utils/date'
+import myStorage from '@/utils/myStorage'
 import user from '@/api/user'
 
 export default {
@@ -123,13 +124,14 @@ export default {
         isAndroid = !!(UA.match(/(Android)\s+([\d.]+)/)),
         isPC = !(isIphone || isAndroid || ipad);
     return{
+      user:this.$store.state.user,
       isPC:isPC,
       isShowWeChat:false,
       isShowQQ:false,
       isShowNav:false,
       isShowMobile:false,
       isShowPayment:false,
-      aaa:this.$store.state.ana.id
+      anaTypeId:this.$route.params.anaTypeId
     }
   },
   mounted(){
@@ -149,10 +151,7 @@ export default {
   },
   computed:mapState({
     ana: state => state.ana,
-    user: state => state.user,
-    anaTypeId: state => state.anaTypeId,
-    anaTypeList: state => state.anaTypeList,
-    prizeList: state => state.prizeList
+    anaTypeList: state => state.anaTypeList
   }),
   methods:{
     getDateDiff,
@@ -162,7 +161,7 @@ export default {
           okText:'确定',
           cancelText:'取消',
           title: '操作提示信息?',
-          content: h => <div><p>确定要跳转到主页吗?</p></div>,
+          content: h => <div><p>确定跳转到主页吗?</p></div>,
           onOk() {
             location.href="http://www.nianshaoyouwei.club";
           },
@@ -172,7 +171,7 @@ export default {
           class: 'test',
       });
     },
-    anaTypeHandle(anaTypeId,event){
+    anaTypeHandle(anaTypeId){
       this.$store.state.anaTypeId = anaTypeId;
       this.$store.state.ana = {anaTitle:'网易云热评墙'}
       // 这里一定要添加params 不然相同组件,相同路径不会跳转
@@ -180,20 +179,19 @@ export default {
     },
     prizeHandle(){
       let _this = this;
+      this.$notification.destroy();
       // 用户未登录
       if(this.user==null){
         if(this.ana.isPrize==0){
           user.userPrize({"anaId":this.ana.id,"userId":0}).then(res=>{
             if(res.code==200){
-              console.log("点赞成功!");
+              //console.log("点赞成功!");
               _this.ana.isPrize++;
               _this.ana.prizeNum++;
-              _this.prizeList.push({"userId":"0","anaId":_this.ana.id});
-              localStorage.setItem("prizeList",JSON.stringify(_this.prizeList));
+              myStorage.addPrize({"userId":"0","anaId":this.ana.id});
             }
           })
         }else{
-          this.$notification.destroy();
           this.$notification.open({
             message: '消息',
             description: '点多了伤身体~',
@@ -204,16 +202,14 @@ export default {
       }else{
         if(this.ana.isPrize == 0){
           this.ana.isPrize++;
-          /** 发送数据库请求点赞 */
           user.userPrize({"anaId":this.ana.id,"userId":this.user.id}).then(res=>{
             if(res.code==200){
-              console.log("点赞成功!");
+              //console.log("点赞成功!");
               _this.ana.isPrize++;
               _this.ana.prizeNum++;
             }
           })
         }else{
-          this.$notification.destroy();
           this.$notification.open({
               message: '消息',
               description: '点多了伤身体~',

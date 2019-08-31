@@ -1,42 +1,70 @@
 <template>
     <div>
       <a-modal
-        title="Hi ~_~" 
+        title="~_~" 
         :visible="visible"
         footer="false"
         width="30%"
         @cancel="handleCancel"
       >
         <a-row type="flex" algin="middle" justify="center">
-          <a-form :form="form" style="width:60%" layout="vertical" hideRequiredMark>
+          <a-form :form="form" style="width:80%" layout="vertical" hideRequiredMark>
             <a-row type="flex" algin="middle" justify="center">
               <a-col :span="24">
-                <a-form-item has-feedback :validate-status="userNameState">
-                  <a-input 
-                    v-decorator="['userName']"
-                    placeholder=" 请输入账号"
-                  >
-                    <a-icon
-                        slot="prefix"
-                        type="user"
-                        style="color: rgba(0,0,0,.25)"
-                    />
-                  </a-input>
+                <a-form-item
+                  label="标题"
+                  :label-col="{ span: 5 }"
+                  :wrapper-col="{ span: 12 }"
+                >
+                  <a-input has-feedback :validate-status="anaTitleState"
+                    placeholder="请输入标题"
+                    v-decorator="[
+                      'anaTitle',
+                      {rules: [{ required: true, message: '请输入标题!' }]}
+                    ]"
+                  />
                 </a-form-item>
               </a-col>
               <a-col :span="24">
-                <a-form-item has-feedback :validate-status="userPasswordState">
-                  <a-input
-                    type="password"
-                    v-decorator="['userPassword']"
-                    placeholder=" 请输入密码"
+                <a-form-item
+                  label="类型"
+                  :label-col="{ span: 5 }"
+                  :wrapper-col="{ span: 12 }"
+                >
+                  <a-select has-feedback :validate-status="anaTypeIdState"
+                    placeholder="请选择类型"
+                    v-decorator="[
+                      'anaTypeId',
+                      {rules: [{ required: true, message: '请选择类型!' }]}
+                    ]"
+                    @change="handleChange"
                   >
-                    <a-icon
-                        slot="prefix"
-                        type="lock"
-                        style="color: rgba(0,0,0,.25)"
-                    />
-                  </a-input>
+                    <a-select-option value="2">
+                      热评
+                    </a-select-option>
+                    <a-select-option value="3">
+                      短句
+                    </a-select-option>
+                    <a-select-option value="4">
+                      段子
+                    </a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <a-col :span="24">
+                <a-form-item 
+                  label="内容"
+                  :label-col="{ span: 5 }"
+                  :wrapper-col="{ span: 12 }"
+                  has-feedback :validate-status="anaContentState"
+                >
+                  <a-textarea
+                    placeholder="请输入内容"
+                    v-decorator="[
+                      'anaContent',
+                      {rules: [{ required: true, message: '请输入语录内容!' }]}
+                    ]"
+                  />
                 </a-form-item>
               </a-col>
             </a-row>
@@ -53,7 +81,7 @@
                 }"
             >
                 <a-button :style="{marginRight: '8px'}" @click="handleCancel" >返回</a-button>
-                <a-button @keyup.enter="handleSubmit" @click="handleSubmit" type="primary" html-type="submit" >登陆</a-button>
+                <a-button @keyup.enter="handleSubmit" @click="handleSubmit" type="primary" html-type="submit" >发布</a-button>
             </a-row>
           </a-form>
         </a-row>
@@ -63,9 +91,8 @@
 
 <script>
 
-    import user from '@/api/user'
+    import ana from '@/api/ana'
     import myStorage from '@/utils/myStorage'
-
     export default {
         props:{
           visible:Boolean
@@ -73,12 +100,15 @@
          data() {
             return {
                 form: this.$form.createForm(this),
-                userNameState:"",
-                userPasswordState:"",
-                userMobileState:"",
+                anaTitleState:"",
+                anaTypeIdState:"",
+                anaContentState:"",
             }
         },
         methods: {
+          handleChange(){
+            
+          },
             handleSubmit(e) {
               let _this = this;
               let flag = true;
@@ -104,27 +134,22 @@
               }
               if(flag){
                 this.form.validateFields(function(errors,values){
-                  user.userLogin(values).then((res)=>{
+                  let user = myStorage.getUserSession();
+                  values.userId = user.id;
+                  values.anaFrom = user.userNickName;
+                  ana.anaPublic(values).then((res)=>{
                     if(res.code==200){
+                        _this.handleCancel();
                         //把本地的点赞数据放到
                         _this.$notification.open({
                             message: '消息',
-                            description: '登陆成功',
+                            description: '发布成功',
                             icon: <a-icon type="smile" style="color: #108ee9" />,
                         });
-                        _this.$store.state.user = res.data;
-                        myStorage.setUserSession(res.data);//将登陆用户信息放入Session中
-                        myStorage.initPrizeUserId();//更新点赞的用户ID
-                        user.userPrizeList(myStorage.getPrizeList()).then(res=>{
-                          if(res.code==200){
-                            myStorage.removePrizeList();
-                          }
-                        });
-                        _this.handleCancel();
                     }else{
                         _this.$notification.open({
                             message: '消息',
-                            description: '登陆失败',
+                            description: '发布失败',
                             icon: <a-icon type="smile" style="color: #F5222D" />,
                         });
                     }
@@ -135,8 +160,9 @@
             handleCancel(e) {
               this.$emit('update:visible',false);//调用父组件去修改数据
               //this.visible = false;
-              this.userNameState = "";
-              this.userPasswordState = "";
+              this.anaTitleState = "";
+              this.anaTypeIdState = "";
+              this.anaContentState = "";
               this.form.resetFields();
             }
         },

@@ -57,7 +57,7 @@
                 </a-form-item>
               </a-col>
             </a-row>
-            <div
+            <a-row
                 :style="{
                 position: 'absolute',
                 left: 0,
@@ -71,7 +71,7 @@
             >
                 <a-button :style="{marginRight: '8px'}" @click="handleCancel" >返回</a-button>
                 <a-button @keyup.enter="handleSubmit" @click="handleSubmit" type="primary" html-type="submit">注册</a-button>
-            </div>
+            </a-row>
           </a-form>
         </a-row>
       </a-modal>

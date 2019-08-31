@@ -1,12 +1,9 @@
 
 export default {
     
-    ana:{
-        anaTitle:'网易云热评墙'
-    },
-    user:JSON.parse(sessionStorage.getItem("userSession"))||null,
+    user:null,//本来在sessionStorage中存在，但是不能动态刷新
+    ana:{anaTitle:'网易云热评墙'},
     anaData:null,
-    anaTypeId:0,
-    anaTypeList:null,
-    prizeList:JSON.parse(localStorage.getItem("prizeList"))||[]
+    anaTypeId:1,
+    anaTypeList:null
 }
