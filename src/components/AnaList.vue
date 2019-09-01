@@ -1,10 +1,7 @@
 <template>
     <div>
-        <a-row>
-            <Header />
-        </a-row>
         <a-row type="flex" align="middle" justify="center">
-            <a-col class="apper" v-if="anaList!=null" :xs="20" :sm="20" :md="20" :lg="12" :xl="12" >
+            <a-col v-if="anaList.length!=0" :xs="20" :sm="20" :md="20" :lg="12" :xl="12" >
                 <!-- 列表的一条内容 -->
                 <a-row v-for="(ana,index) in anaList" :key="index">
                     <a-row type="flex">
@@ -31,7 +28,7 @@
                     </a-row>
                     <a-row type="flex" align="middle" class="bottom"></a-row>
                 </a-row>
-                <a-row v-if="anaList!=null && anaList!=''" style="margin:60px 0px 50px" type="flex" align="middle" justify="center" >
+                <a-row v-if="anaList.length!=0" style="margin:60px 0px 50px" type="flex" align="middle" justify="center" >
                     <a-col :span="24" type="flex" align="middle" justify="center" >
                         <a-pagination
                             :pageSizeOptions="anaPageSizeOptions"
@@ -55,8 +52,8 @@
                 </a-row>
             </a-col>
         </a-row>
-        <a-row>
-            <Footer class="apper" v-show="anaList!=null && anaList!=''"/>
+        <a-row v-show="anaList.length!=0">
+            <Footer />
         </a-row>
     </div>
     
@@ -65,18 +62,17 @@
 <script>
 import { getDateDiff } from '../utils/date'
 import { mapState,mapActions } from 'vuex';
-import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ana from '@/api/ana'
 
 export default {
     components:{
-        Header,Footer
+        Footer
     },
     data(){ 
         return{
             anaTypeId:this.$route.params.anaTypeId,
-            anaList:null,
+            anaList:[],
             anaPage:{current: 1,pageSize: 10,total:0},
             anaPageSizeOptions: ['10', '20', '30']
         }

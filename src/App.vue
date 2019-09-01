@@ -1,15 +1,21 @@
 <template>
   <div>
-        <!-- 头部、主题内容、尾部 -->
-        <router-view :key="$route.fullPath"/>  
+        <!-- 头部 -->
+        <Header/>
+        <!-- 、主题内容、尾部 -->
+        <router-view class="apper" :key="$route.fullPath"/>  
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 import user from '@/api/user'
+import Header from '@/components/Header'
 
 export default {
+  components:{
+    Header
+  },
   data(){
     var UA = navigator.userAgent;
     var ipad = !!(UA.match(/(iPad).*OS\s([\d_]+)/)),
@@ -55,10 +61,11 @@ export default {
 
 <style>
   .apper{
-    animation: apper 0.75s;
+    animation: apper 1.1s;
   }
   @keyframes apper{
     0%   {opacity: 0;transform:translateY(30px);}
     100% {opacity: 1;transform:translateY(0px);}
   }
+  
 </style>

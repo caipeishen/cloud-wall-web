@@ -131,7 +131,13 @@ export default {
       isShowNav:false,
       isShowMobile:false,
       isShowPayment:false,
-      anaTypeId:this.$route.params.anaTypeId
+      // 因为Header不再包含在路由中，所以需要特别处理一下（这里使用了watch）
+      anaTypeId:1
+    }
+  },
+  watch:{
+    $route(to,from){
+      this.anaTypeId = to.params.anaTypeId;
     }
   },
   mounted(){

@@ -2,10 +2,7 @@
     
     <!-- 内容的详情 -->
     <div>
-        <a-row>
-            <Header/>
-        </a-row>
-        <a-row class="apper" type="flex" align="middle" justify="center">
+        <a-row type="flex" align="middle" justify="center">
             <a-col :xs="20" :sm="20" :md="20" :lg="12" :xl="12" >
                 <a-row type="flex" justify="start" class="content">
                     <a-col>
@@ -94,8 +91,8 @@
                 </a-row>
             </a-col>
         </a-row>
-        <a-row class="apper">
-            <Footer v-if="ana!=null"/>
+        <a-row v-if="ana!=null">
+            <Footer />
         </a-row>
     </div>
 
@@ -107,7 +104,6 @@ import moment from 'moment'
 import { getDateDiff } from '@/utils/date'
 import { mapState } from 'vuex'
 
-import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
 import ana from '@/api/ana'
@@ -117,7 +113,7 @@ import myStorage from '@/utils/myStorage'
  
 export default {
     components:{
-        Header,Footer
+        Footer
     },
     data(){
         return{
@@ -129,7 +125,7 @@ export default {
             anaDown:null,
             commentContent:null,
 
-            commentList:null,
+            commentList:[],
             commentPage:{current: 1,pageSize: 10,total:0},
         }
     },
