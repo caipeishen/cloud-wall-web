@@ -3,8 +3,8 @@
         <a-row>
             <Header />
         </a-row>
-        <a-row class="apper" type="flex" align="middle" justify="center">
-            <a-col v-if="anaList!=null" :xs="20" :sm="20" :md="20" :lg="12" :xl="12" >
+        <a-row type="flex" align="middle" justify="center">
+            <a-col class="apper" v-if="anaList!=null" :xs="20" :sm="20" :md="20" :lg="12" :xl="12" >
                 <!-- 列表的一条内容 -->
                 <a-row v-for="(ana,index) in anaList" :key="index">
                     <a-row type="flex">

@@ -1,7 +1,7 @@
 <template>
     <div>
       <a-modal
-        title="Hi ~_~" 
+        title="~_~" 
         :visible="visible"
         footer="false"
         width="30%"

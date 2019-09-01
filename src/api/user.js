@@ -19,6 +19,10 @@ user.userRegister = (param) => {
 user.userLogin = (param) => {
     return request('post', cfg.apiUrl + 'user/userLogin',param);
 }
+// 用户登陆
+user.userModify = (param) => {
+    return request('post', cfg.apiUrl + 'user/userModify',param);
+}
 // 用户点赞
 user.userPrize = (param) => {
     return request('post', cfg.apiUrl + 'user/userPrize',param);

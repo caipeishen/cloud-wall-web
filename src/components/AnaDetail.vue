@@ -56,15 +56,15 @@
                         </a-list-item>
                     </a-list>
                 </a-row> -->
-                <a-row v-if="commentList!=null && commentList.length!=0">
+                <a-row v-if="commentList.length!=0">
                     <p class="commentTitle">{{commentPage.total}}条回应： </p>
                     <a-list
                         class="comment-list"
                         itemLayout="horizontal"
-                        :dataSource="commentList"
+                        :dataSource="commentList" 
                     >
-                        <a-list-item slot="renderItem" slot-scope="item, index">
-                        <a-comment :author="item.userNickName" size="large" icon="user" >
+                        <a-list-item slot="renderItem" slot-scope="item,index">
+                        <a-comment :author="item.userNickName" :avatar="require('../assets/userHead/userHead1.jpg')">
                             <p slot="content" style="margin-top:10px">{{item.commentContent}}</p>
                             <a-tooltip slot="datetime" :title="moment(item.createDate).format('lll')">
                                 <span>{{getDateDiff(item.createDate)}}</span>
@@ -72,7 +72,7 @@
                         </a-comment>
                         </a-list-item>
                     </a-list>
-                    <!-- <a-row v-show="commentList!=null" type="flex" align="middle" justify="center" style="margin:20px 0px">
+                    <!-- <a-row v-show="commentList.length!=0" type="flex" align="middle" justify="center" style="margin:20px 0px">
                         <a-pagination
                             simple
                             size="small"
@@ -84,7 +84,9 @@
                         />
                     </a-row> -->
                 </a-row>
-                <a-row style="margin:30px 0px 50px">
+                <!-- 解决初始化页面不友好问题 -->
+                <!-- :style="commentList.length==0 ? '' : 'apper'" -->
+                <a-row :style="commentList.length==0 ? '' : 'apper'" style="margin:30px 0px 50px">
                     <p style="font-size:21px;font-weight:bold;">发表评论</p>
                     <p style="font-size:15px">评论</p>
                     <p><textarea v-model="commentContent" style="width:100%;height:120px;border:1px solid gainsboro"/></p>
@@ -120,12 +122,13 @@ export default {
     data(){
         return{
             moment,
+            getDateDiff,
             anaId:this.$route.params.anaId,
             anaTypeId:this.$route.params.anaTypeId,
             anaUp:null,
             anaDown:null,
-
             commentContent:null,
+
             commentList:null,
             commentPage:{current: 1,pageSize: 10,total:0},
         }
@@ -160,7 +163,6 @@ export default {
         });
     },
     methods:{
-        getDateDiff,
         toAnaDetail(ana){
             this.$store.state.ana = ana;
             this.$router.push({name:"AnaDetail",params:{"anaTypeId":this.anaTypeId,"anaId":this.ana.id}});

@@ -18,16 +18,17 @@
                 </a-row>
             </a-col>
         </a-row>
-        <a-row>
+        <!-- 这里加 v-if 是位了让 封装的附件不先加载，等点击再加载 -->
+        <a-row v-if="loginVisible">
             <Login :visible.sync="loginVisible"/>
         </a-row>
-        <a-row>
+        <a-row v-if="registerVisible">
             <Register :visible.sync="registerVisible"/>
         </a-row>
-        <a-row>
+        <a-row v-if="mineVisible">
             <Mine :visible.sync="mineVisible"/>
         </a-row>
-        <a-row>
+        <a-row v-if="publishVisible">
             <Publish :visible.sync="publishVisible"/>
         </a-row>
     </div>
