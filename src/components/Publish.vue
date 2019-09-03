@@ -13,8 +13,8 @@
               <a-col :span="24">
                 <a-form-item
                   label="标题"
-                  :label-col="{ span: 5 }"
-                  :wrapper-col="{ span: 12 }"
+                  :label-col="{ span: 24 }"
+                  :wrapper-col="{ span: 24 }"
                 >
                   <a-input has-feedback :validate-status="anaTitleState"
                     placeholder="请输入标题"
@@ -28,8 +28,8 @@
               <a-col :span="24">
                 <a-form-item
                   label="类型"
-                  :label-col="{ span: 5 }"
-                  :wrapper-col="{ span: 12 }"
+                  :label-col="{ span: 24 }"
+                  :wrapper-col="{ span: 24 }"
                 >
                   <a-select has-feedback :validate-status="anaTypeIdState"
                     placeholder="请选择类型"
@@ -54,8 +54,8 @@
               <a-col :span="24">
                 <a-form-item 
                   label="内容"
-                  :label-col="{ span: 5 }"
-                  :wrapper-col="{ span: 12 }"
+                  :label-col="{ span: 24 }"
+                  :wrapper-col="{ span: 24 }"
                   has-feedback :validate-status="anaContentState"
                 >
                   <a-textarea

@@ -2,8 +2,12 @@
   <div>
         <!-- 头部 -->
         <Header/>
-        <!-- 、主题内容、尾部 -->
+        
+        <!-- 主题内容、尾部 -->
         <router-view class="apper" :key="$route.fullPath"/>  
+        
+        <!-- 返回顶部 -->
+        <a-back-top/>
   </div>
 </template>
 
@@ -61,11 +65,10 @@ export default {
 
 <style>
   .apper{
-    animation: apper 1.1s;
+    animation: apper 0.9s;
   }
   @keyframes apper{
     0%   {opacity: 0;transform:translateY(30px);}
     100% {opacity: 1;transform:translateY(0px);}
   }
-  
 </style>

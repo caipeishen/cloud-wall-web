@@ -19,15 +19,15 @@
                     <a-col :span="24">
                         <a-row type="flex" justify="space-between" align="middle" class="other">
                             <a-col v-if="anaUp!=null">
-                                <span v-if="anaUp.anaTitle.length<10" class="otherSpan" @click="toAnaDetail(anaUp)">{{'« '+ anaUp.anaTitle}}</span>
-                                <span v-else class="otherSpan" @click="toAnaDetail(anaUp)">{{'« '+ anaUp.anaTitle.substring(0,10)}}</span>
+                                <span v-if="anaUp.anaTitle.length<15" class="otherSpan" @click="toAnaDetail(anaUp)">{{'« '+ anaUp.anaTitle}}</span>
+                                <span v-else class="otherSpan" @click="toAnaDetail(anaUp)">{{'« '+ anaUp.anaTitle.substring(0,10)+'...'}}</span>
                             </a-col>
                             <a-col v-else>
                                 <span class="otherSpan"></span>
                             </a-col>
                             <a-col v-if="anaDown!=null">
-                                <span v-if="anaDown.anaTitle.length<10" class="otherSpan" @click="toAnaDetail(anaDown)">{{anaDown.anaTitle+' »'}}</span>
-                                <span v-else class="otherSpan" @click="toAnaDetail(anaDown)">{{anaDown.anaTitle.substring(0,10)+' »'}}</span>
+                                <span v-if="anaDown.anaTitle.length<15" class="otherSpan" @click="toAnaDetail(anaDown)">{{anaDown.anaTitle+' »'}}</span>
+                                <span v-else class="otherSpan" @click="toAnaDetail(anaDown)">{{anaDown.anaTitle.substring(0,15)+'... »'}}</span>
                             </a-col>
                             <a-col v-else>
                                 <span class="otherSpan"></span>
@@ -35,24 +35,6 @@
                         </a-row>
                     </a-col>
                 </a-row>
-                <!-- <a-row v-if="commentData.list!=null">
-                    <p class="commentTitle">99+条回应：{{ana.anaTitle}}</p>
-                    <a-list
-                        class="comment-list"
-                        itemLayout="horizontal"
-                        :dataSource="commentData.list"
-                    >
-                        <a-list-item slot="renderItem" slot-scope="item, index">
-                            <a-comment :author="item.userName" :avatar="item.userName">
-                                
-                                <p slot="content">{{item.commentContent}}</p>
-                                <a-tooltip slot="datetime" :title="item.createDate.format('YYYY-MM-DD HH:mm:ss')">
-                                    <span>{{item.createDate.fromNow()}}</span>
-                                </a-tooltip>
-                            </a-comment>
-                        </a-list-item>
-                    </a-list>
-                </a-row> -->
                 <a-row v-if="commentList.length!=0">
                     <p class="commentTitle">{{commentPage.total}}条回应： </p>
                     <a-list
@@ -69,17 +51,6 @@
                         </a-comment>
                         </a-list-item>
                     </a-list>
-                    <!-- <a-row v-show="commentList.length!=0" type="flex" align="middle" justify="center" style="margin:20px 0px">
-                        <a-pagination
-                            simple
-                            size="small"
-                            width="100%"
-                            @change="onChange"
-                            v-model="commentPage.current"
-                            :pageSize="commentPage.pageSize"
-                            :total="commentPage.total"
-                        />
-                    </a-row> -->
                 </a-row>
                 <!-- 解决初始化页面不友好问题 -->
                 <!-- :style="commentList.length==0 ? '' : 'apper'" -->
