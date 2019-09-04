@@ -71,7 +71,7 @@ export default {
     },
     data(){ 
         return{
-            anaTypeId:this.$route.params.anaTypeId,
+            anaTypeId:this.$route.params.anaTypeId || 1,
             anaList:[],
             anaPage:{current: 1,pageSize: 10,total:0},
             anaPageSizeOptions: ['10', '20', '30']

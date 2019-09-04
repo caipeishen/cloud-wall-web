@@ -1,5 +1,5 @@
 {
-  "name": "AccessAuthorizationWeb",
+  "name": "cloud-wall",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -17,6 +17,7 @@
     "file-saver": "^2.0.2",
     "jquery": "^3.4.1",
     "less-loader": "^5.0.0",
+    "mobile-detect": "^1.4.3",
     "moment": "^2.24.0",
     "pubsub-js": "^1.7.0",
     "qs": "^6.7.0",

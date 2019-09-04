@@ -4,8 +4,8 @@ import cfg from '@/config/config'
 const user = { }
 
 // 用户访问
-user.visit = () => {
-    return request('post', cfg.apiUrl + 'user/visit');
+user.visit = (param) => {
+    return request('post', cfg.apiUrl + 'user/visit',param);
 }
 // 检查用户名是否被注册
 user.userNameCheckIsRegister = (param) => {

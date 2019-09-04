@@ -32,16 +32,22 @@
           <a-col :span="1">
             <a-icon v-if="!saveState" @click="saveState=!saveState" type="setting" style="font-size:17px" />
             <a-icon v-else @click="saveState=!saveState" type="setting" style="font-size:17px" theme="twoTone" />
-            
           </a-col>
         </a-row>
-        <!-- 
-           <a-icon
-          slot="prefix"
-          type="user"
-          style="color:rgba(0,0,0,.25)"
-        />
-         -->
+
+        <a-row>
+          <a-upload 
+            name="file" 
+            :multiple="true"
+            :headers="headers" @change="handleChange"
+            action="https://www.mocky.io/v2/5cc8019d300000980a055e76" >
+              
+              <a-button>
+                <a-icon type="upload" /> 更换头像
+              </a-button>
+              
+          </a-upload>
+        </a-row>
 
         <a-row
               :style="{
@@ -83,6 +89,10 @@
               userNickNameModify:'',
               userSignatureModify:'',
               userMobileModify:'',
+              // 上传头像
+              headers: {
+                authorization: 'authorization-text',
+              }
             }
         },
         mounted(){
@@ -108,6 +118,19 @@
             // 点击返回
             handleCancel(e) {
               this.$emit('update:visible',false);//调用父组件去修改数据
+            },
+            // 点击上传
+            handleChange(info) {
+              info.fileList = [];
+              console.log(info);
+              // if (info.file.status !== 'uploading') {
+              //   console.log(info.file, info.fileList);
+              // }
+              // if (info.file.status === 'done') {
+              //   this.$message.success(`${info.file.name} file uploaded successfully`);
+              // } else if (info.file.status === 'error') {
+              //   this.$message.error(`${info.file.name} file upload failed.`);
+              // }
             },
         },
     }
