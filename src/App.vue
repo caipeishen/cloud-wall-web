@@ -36,17 +36,13 @@ export default {
   mounted() {
     // 请求分类信息
     this.$store.dispatch("getAnaTypeList");
-    let visit = JSON.parse(sessionStorage.getItem("visit"));
-    if(!visit){
-      setTimeout(()=>{
-        user.visit({"device":this.getDeviceInfo()}).then(res=>{
-          if(res.code==200){
-            console.log('访问成功!');
-            sessionStorage.setItem("visit",true);
-          }
-        });
-      },3000);
-    }
+    setTimeout(()=>{
+      user.visit({"device":this.getDeviceInfo()}).then(res=>{
+        if(res.code==200){
+          console.log('访问成功!');
+        }
+      });
+    },3000);
     // 解决IE加 '#'号不跳链接
     if (!!window.ActiveXObject || "ActiveXObject" in window) {
       window.addEventListener(

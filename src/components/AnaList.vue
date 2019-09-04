@@ -85,8 +85,7 @@ export default {
         getDateDiff,
         getAnaList(){
             let _this = this;
-            setTimeout(() => {
-                ana.getAnaList({"userId":this.$store.state.user==null?0:this.$store.state.user.id,"anaTypeId":this.anaTypeId,"current":this.anaPage.current,"pageSize":this.anaPage.pageSize}).then(res=>{
+            ana.getAnaList({"userId":this.$store.state.user==null?0:this.$store.state.user.id,"anaTypeId":this.anaTypeId,"current":this.anaPage.current,"pageSize":this.anaPage.pageSize}).then(res=>{
                 if(res.code==200){
                     _this.anaList = res.data.list;
                     _this.anaPage.total = res.data.total;
@@ -98,8 +97,6 @@ export default {
                     });
                 }
             });
-            }, 100);
-            
         },
         toAnaDetail(ana){
             //跳到语录详情页，并将当前的语录传过去
