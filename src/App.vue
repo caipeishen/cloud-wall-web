@@ -34,15 +34,21 @@ export default {
     }
   },
   mounted() {
+    Array.prototype.contains = function(needle) {
+      for (let i in this) {
+        if (this[i].indexOf(needle) > 0)
+          return i;
+      }
+      return -1;
+    }
     // 请求分类信息
     this.$store.dispatch("getAnaTypeList");
-    setTimeout(()=>{
+      alert(this.getDeviceInfo());
       user.visit({"device":this.getDeviceInfo()}).then(res=>{
         if(res.code==200){
           console.log('访问成功!');
         }
       });
-    },3000);
     // 解决IE加 '#'号不跳链接
     if (!!window.ActiveXObject || "ActiveXObject" in window) {
       window.addEventListener(
@@ -71,6 +77,7 @@ export default {
           os = md.os() + md.version("Android");
           var sss = device_type.split(";");
           var i = sss.contains("Build/");
+          console.log(i);
           if (i > -1) {
             model = sss[i].substring(1, sss[i].indexOf("Build/"));
           }
@@ -94,7 +101,7 @@ export default {
 
 <style>
   .apper{
-    animation: apper 0.9s;
+    animation: apper 0.75s;
   }
   @keyframes apper{
     0%   {opacity: 0;transform:translateY(30px);}

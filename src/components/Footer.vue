@@ -52,7 +52,7 @@ export default {
         return{
             loginVisible:false,
             registerVisible:false,
-            mineVisible:false,
+            mineVisible:true,
             publishVisible:false,
         }
     },

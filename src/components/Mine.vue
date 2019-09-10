@@ -13,7 +13,11 @@
           <a-col :span="23">
             <a-row type="flex" align="top" justif="start">
               <a-col :xs="4" :sm="4" :md="4" :lg="3" :xl="3" >
-                <a-avatar title="点击上传头像" style="cursor: pointer;" size="large" icon="user" :src="require('../assets/userHead/userHead2.jpg')"/>
+                <a-avatar 
+                  title="点击上传头像" 
+                  style="cursor: pointer;" 
+                  size="large" icon="user" 
+                  :src="require('../assets/userHead/userHead2.jpg')"/>
               </a-col>
               <a-col :xs="20" :sm="20" :md="21" :lg="21" :xl="21" >
                 <p v-if="!saveState">
@@ -40,12 +44,10 @@
             name="file" 
             :multiple="true"
             :headers="headers" @change="handleChange"
-            action="https://www.mocky.io/v2/5cc8019d300000980a055e76" >
-              
+            action="http://192.168.2.2:9090/file/upLoadImg" >
               <a-button>
                 <a-icon type="upload" /> 更换头像
               </a-button>
-              
           </a-upload>
         </a-row>
 

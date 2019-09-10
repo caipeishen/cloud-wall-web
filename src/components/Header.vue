@@ -185,6 +185,8 @@ export default {
     },
     prizeHandle(){
       let _this = this;
+      console.log(JSON.parse(localStorage.getItem("prizeList")));
+      
       this.$notification.destroy();
       // 用户未登录
       if(this.user==null){

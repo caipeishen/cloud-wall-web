@@ -5,7 +5,7 @@ const user = { }
 
 // 用户访问
 user.visit = (param) => {
-    return request('post', cfg.apiUrl + 'user/visit',param);
+    return request('get', cfg.apiUrl + 'user/visit',param);
 }
 // 检查用户名是否被注册
 user.userNameCheckIsRegister = (param) => {
