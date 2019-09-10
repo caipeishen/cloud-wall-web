@@ -43,7 +43,7 @@ export default {
     }
     // 请求分类信息
     this.$store.dispatch("getAnaTypeList");
-      alert(this.getDeviceInfo());
+      console.log(this.getDeviceInfo());
       user.visit({"device":this.getDeviceInfo()}).then(res=>{
         if(res.code==200){
           console.log('访问成功!');

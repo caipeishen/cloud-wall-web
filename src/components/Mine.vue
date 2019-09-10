@@ -81,9 +81,7 @@
           visible:Boolean
         },
          data() {
-           let _this = this;
             return {
-              __this : _this,
               saveState:false,
               userNickName:'',
               userSignature:'',
