@@ -136,6 +136,7 @@ export default {
     color: #676F7A;
     font-size: 16px;
     cursor: pointer;
+    text-align: justify;
 } 
 .footer{
     margin: 50px 0px 0px;

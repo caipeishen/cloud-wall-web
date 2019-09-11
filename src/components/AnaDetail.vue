@@ -193,6 +193,7 @@ export default {
     margin: 30px 0px;
     font-size: 16px;
     color: #676F7A;
+    text-align:justify;
 }
 .form{
     margin-bottom: 40px;
@@ -212,10 +213,10 @@ export default {
 .comment{
     width: 100%;
     cursor: pointer;
-    text-align:center;
     padding:8px;
     color:black;
     border:1px solid gainsboro;
+    text-align:center;
 }
 .commentTitle{
     font-size: 22px;

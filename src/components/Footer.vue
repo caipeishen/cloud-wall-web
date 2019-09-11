@@ -1,5 +1,5 @@
 <template>
-    <div class="apper">
+    <div>
         <!-- 底部横线 -->
         <a-row style="border-top:1px solid gainsboro;"></a-row>
         <a-row class="footer" type="flex" align="middle" justify="center" >
@@ -52,7 +52,7 @@ export default {
         return{
             loginVisible:false,
             registerVisible:false,
-            mineVisible:true,
+            mineVisible:false,
             publishVisible:false,
         }
     },
