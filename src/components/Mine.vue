@@ -41,13 +41,11 @@
 
         <a-row>
           <a-upload 
-            name="file" 
             :multiple="true"
-            :headers="headers" @change="handleChange"
-            action="http://192.168.2.2:9090/file/upLoadImg" >
-              <a-button>
-                <a-icon type="upload" /> 更换头像
-              </a-button>
+            :fileList="fileList"
+            :remove="handleRemove"
+            :beforeUpload="beforeUpload">
+              <a-button><a-icon type="upload" /> 更换头像</a-button>
           </a-upload>
         </a-row>
 
@@ -74,6 +72,8 @@
 <script>
 
     import user from '@/api/user'
+    import reqwest from 'reqwest'
+    import cfg from "@/config/config";
     import myStorage from '@/utils/myStorage'
 
     export default {
@@ -89,10 +89,7 @@
               userNickNameModify:'',
               userSignatureModify:'',
               userMobileModify:'',
-              // 上传头像
-              headers: {
-                authorization: 'authorization-text',
-              }
+              fileList:[],
             }
         },
         mounted(){
@@ -119,19 +116,60 @@
             handleCancel(e) {
               this.$emit('update:visible',false);//调用父组件去修改数据
             },
-            // 点击上传
-            handleChange(info) {
-              info.fileList = [];
-              console.log(info);
-              // if (info.file.status !== 'uploading') {
-              //   console.log(info.file, info.fileList);
-              // }
-              // if (info.file.status === 'done') {
-              //   this.$message.success(`${info.file.name} file uploaded successfully`);
-              // } else if (info.file.status === 'error') {
-              //   this.$message.error(`${info.file.name} file upload failed.`);
-              // }
+               //移除上传文件
+            handleRemove(file) {
+              const index = this.fileList.indexOf(file);
+              const newFileList = this.fileList.slice();
+              newFileList.splice(index, 1);
+              this.fileList = newFileList
             },
+            // 上传之后
+            beforeUpload(file){
+              let fileName = file.name;
+              let fileSuffix = fileName.substring(fileName.lastIndexOf('.'));
+              if(fileSuffix.toUpperCase() != '.JPG' && fileSuffix.toUpperCase() != '.JPEG' && fileSuffix.toUpperCase() != '.PNG' && fileSuffix.toUpperCase() != '.BMP'){
+                this.fileList = [];
+                this.$message.warning('请选择图片!');
+              }else{
+                if(this.fileList.length==1){
+                  this.fileList.splice(0,1);
+                }
+                this.fileList = [...this.fileList, file]
+              }
+              let _this = this;
+              const { fileList } = this;
+              const formData = new FormData();
+              if(fileList.length==0){
+                this.$message.warning('请选择文件!');
+              }else{
+                fileList.forEach((file) => {
+                  formData.append('file', file);
+                  formData.append('userId', 1);
+                });
+                //console.log("fileList:"+fileList[0]);
+                reqwest({
+                  url: cfg.apiUrl+'/file/upLoadImg',
+                  method: 'post',
+                  processData: false,
+                  data: formData,
+                  success: (result) => {
+                    if(result.code=='200'){
+                      this.fileList = []
+                      this.uploading = false
+                      this.$message.success('导入成功!');
+                    }else{
+                      this.uploading = false
+                      this.$message.error(result.message);
+                    }
+                  },
+                  error: () => {
+                    this.$message.error('导入失败!');
+                  },
+                });
+              }
+
+
+            }
         },
     }
 
