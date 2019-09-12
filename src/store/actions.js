@@ -10,6 +10,10 @@ export default {
     })
   },
 
+  setUserSession({commit},userSession){
+    localStorage.setItem("userSession",JSON.stringify(userSession));
+  }
+
   //{anaTypeId,searchName,pageNo,pageSize}
   // getAnaList({commit},obj){
   //   return new Promise((resolve, reject) => { 

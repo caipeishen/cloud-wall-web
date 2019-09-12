@@ -19,7 +19,7 @@ user.userRegister = (param) => {
 user.userLogin = (param) => {
     return request('post', cfg.apiUrl + 'user/userLogin',param);
 }
-// 用户登陆
+// 用户修改
 user.userModify = (param) => {
     return request('post', cfg.apiUrl + 'user/userModify',param);
 }

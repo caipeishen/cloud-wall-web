@@ -1,7 +1,7 @@
 <template>
     <div>
         <a-row type="flex" align="middle" justify="center">
-            <a-col v-if="anaList.length!=0" :xs="20" :sm="20" :md="20" :lg="12" :xl="12" >
+            <a-col :xs="20" :sm="20" :md="20" :lg="12" :xl="12" >
                 <!-- 列表的一条内容 -->
                 <a-row v-for="(ana,index) in anaList" :key="index">
                     <a-row type="flex">
@@ -45,11 +45,11 @@
                         </a-pagination>
                     </a-col>
                 </a-row>
-                <a-row v-else style="margin:30px 0px 50px" type="flex" align="middle" justify="center" >
+                <!-- <a-row v-else style="margin:30px 0px 50px" type="flex" align="middle" justify="center" >
                     <a-col :span="24" type="flex" align="middle" justify="center" >
                         暂无内容
                     </a-col>
-                </a-row>
+                </a-row> -->
             </a-col>
         </a-row>
         <a-row v-show="anaList.length!=0">

@@ -43,7 +43,7 @@
                         :dataSource="commentList" 
                     >
                         <a-list-item slot="renderItem" slot-scope="item,index">
-                        <a-comment :author="item.userNickName" :avatar="require('../assets/userHead/userHead1.jpg')">
+                        <a-comment :author="item.userNickName" :avatar="apiUrl + item.userHeadImg">
                             <p slot="content" style="margin-top:10px">{{item.commentContent}}</p>
                             <a-tooltip slot="datetime" :title="moment(item.createDate).format('lll')">
                                 <span>{{getDateDiff(item.createDate)}}</span>
@@ -77,6 +77,7 @@ import { mapState } from 'vuex'
 
 import Footer from '@/components/Footer'
 
+import cfg from '@/config/config'
 import ana from '@/api/ana'
 import comment from '@/api/comment'
 
@@ -88,6 +89,7 @@ export default {
     },
     data(){
         return{
+            apiUrl:cfg.apiUrl,
             moment,
             getDateDiff,
             anaId:this.$route.params.anaId,
