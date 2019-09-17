@@ -12,6 +12,10 @@ import router from './router'
 
 Vue.use(Antd);
 
+// 全局加载框
+import Loading from '@/components/Loading/Loading.js'
+Vue.use(Loading);
+
 router.beforeEach((to, from, next) => {
   /* 路由发生变化修改页面title */
   if (to.meta.title) {

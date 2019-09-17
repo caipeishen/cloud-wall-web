@@ -52,9 +52,15 @@
                 </a-row> -->
             </a-col>
         </a-row>
+
         <a-row v-show="anaList.length!=0">
             <Footer />
         </a-row>
+
+        <a-row>
+            <Loading :stop="loadingShow"></Loading>
+        </a-row>
+
     </div>
     
 </template>
@@ -74,7 +80,8 @@ export default {
             anaTypeId:this.$route.params.anaTypeId || 1,
             anaList:[],
             anaPage:{current: 1,pageSize: 10,total:0},
-            anaPageSizeOptions: ['10', '20', '30']
+            anaPageSizeOptions: ['10', '20', '30'],
+            loadingShow:false
         }
     },
     mounted(){
@@ -85,6 +92,7 @@ export default {
         getDateDiff,
         getAnaList(){
             let _this = this;
+            this.loadingShow = true;
             ana.getAnaList({"userId":this.$store.state.user==null?0:this.$store.state.user.id,"anaTypeId":this.anaTypeId,"current":this.anaPage.current,"pageSize":this.anaPage.pageSize}).then(res=>{
                 if(res.code==200){
                     _this.anaList = res.data.list;
@@ -97,6 +105,7 @@ export default {
                     });
                 }
             });
+            this.loadingShow = false;
         },
         toAnaDetail(ana){
             //跳到语录详情页，并将当前的语录传过去

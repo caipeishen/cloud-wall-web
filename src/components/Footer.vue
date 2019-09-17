@@ -31,6 +31,8 @@
         <a-row v-if="publishVisible">
             <Publish :visible.sync="publishVisible"/>
         </a-row>
+
+
     </div>
 
 </template>
@@ -150,5 +152,20 @@ export default {
     }
     .loginOut,.login,.register,.publish,.youLian,.mine{
         cursor: pointer;
+    }
+
+    .spin-back{
+        position:absolute;
+        top: 0%;
+        left: 0%;
+        width: 100%;
+        height: 1000px;
+        background: rgba(0,0,0,0.1);
+        
+    }
+    .spin{
+        position:absolute;
+        top: 50%;
+        left: 50%;
     }
 </style>
