@@ -1,7 +1,7 @@
 
 export default {
     
-    user:null,//本来在sessionStorage中存在，但是不能动态刷新
+    user:JSON.parse(sessionStorage.getItem("userSession")),//解决刷新页面用户丢失问题
     ana:{anaTitle:'网易云热评墙'},
     anaData:null,
     anaTypeId:1,
