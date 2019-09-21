@@ -62,7 +62,7 @@
               textAlign: 'right',
               }"
           >
-                <a-button :style="{marginRight: '8px'}" type="primary" @click="handleCancel" >确定</a-button>
+                <a-button :style="{marginRight: '8px'}"  @click="handleCancel" >返回</a-button>
         </a-row>
       </a-modal>
 
@@ -74,6 +74,7 @@
     import user from '@/api/user'
     import reqwest from 'reqwest'
     import cfg from "@/config/config";
+    import {mapState} from "vuex";
     import myStorage from '@/utils/myStorage'
 
     export default {
@@ -84,26 +85,19 @@
             return {
               apiUrl:cfg.apiUrl,
               saveState:false,
-              userHeadImg:'',
-              userNickName:'',
-              userSignature:'',
-              userMobile:'',
-              userNickNameModify:'',
-              userSignatureModify:'',
-              userMobileModify:'',
-              fileList:[],
+              userHeadImg:this.$store.state.user.userHeadImg,
+              userNickName:this.$store.state.user.userNickName,
+              userSignature:this.$store.state.user.userSignature,
+              userMobile:this.$store.state.user.userMobile,
+              userNickNameModify:this.$store.state.user.userNickName,
+              userSignatureModify:this.$store.state.user.userSignature,
+              userMobileModify:this.$store.state.user.userMobile,
+              fileList:[]
             }
         },
-        mounted(){
-            let user = this.$store.state.user;
-            this.userNickName = user == null ? '' : user.userNickName;
-            this.userSignature = user == null ? '' : user.userSignature;
-            this.userMobile = user == null ? '' : user.userMobile;
-            this.userHeadImg = user == null ? '' : user.userHeadImg;
-            this.userNickNameModify = this.userNickName;
-            this.userSignatureModify = this.userSignature;
-            this.userMobileModify = this.userMobile;
-        },  
+        computed:mapState({
+            user : state => state.user
+        }),
         methods: {
             // 点击更换头像
             upLoadHeadImg(){
@@ -118,6 +112,36 @@
             },
             // 更新用户信息
             updateUserInfo(){
+              this.$notification.destroy();
+              if(this.saveState){
+                if(this.userNickName != this.userNickNameModify || this.userSignature != this.userSignatureModify || this.userMobile != this.userMobileModify){
+                  user.userModify({"userId":this.user.id,"userNickName":this.userNickNameModify,"userSignature":this.userSignatureModify,"userMobile":this.userMobileModify}).then(res=>{
+                    if(res.code == 200){
+                      this.$notification.open({
+                          message: '消息',
+                          description: '更新成功!',
+                          icon: <a-icon type="smile" style="color: #108ee9" />,
+                      });
+                      
+                      this.userNickName = this.userNickNameModify;
+                      this.userSignature = this.userSignatureModify;
+                      this.userMobile = this.userMobileModify;
+                      let user = myStorage.getUserSession();
+                      user.userNickName = this.userNickNameModify;
+                      user.userSignature = this.userSignatureModify;
+                      user.userMobile = this.userMobileModify;
+                      this.$store.state.user = user;
+                      myStorage.setUserSession(user);
+                    }else{
+                      this.$notification.open({
+                          message: '消息',
+                          description: res.message,
+                          icon: <a-icon type="smile" style="color: #108ee9" />,
+                      });
+                    }
+                  })
+                }
+              }
               this.saveState = !this.saveState;
             },
             // 上传之后
@@ -127,7 +151,11 @@
               let fileSuffix = fileName.substring(fileName.lastIndexOf('.'));
               if(fileSuffix.toUpperCase() != '.JPG' && fileSuffix.toUpperCase() != '.JPEG' && fileSuffix.toUpperCase() != '.PNG' && fileSuffix.toUpperCase() != '.BMP'){
                 this.fileList = [];
-                this.$message.warning('请选择图片!');
+                this.$notification.open({
+                    message: '消息',
+                    description: '请选择图片格式!',
+                    icon: <a-icon type="frown" style="color: #FAAD14" />,
+                });
               }else{
                 if(this.fileList.length==1){
                   this.fileList.splice(0,1);
@@ -138,7 +166,11 @@
               const { fileList } = this;
               const formData = new FormData();
               if(fileList.length==0){
-                this.$message.warning('请选择文件!');
+                this.$notification.open({
+                    message: '消息',
+                    description: '请选择图片!',
+                    icon: <a-icon type="frown" style="color: #FAAD14" />,
+                });
               }else{
                 fileList.forEach((file) => {
                   formData.append('file', file);

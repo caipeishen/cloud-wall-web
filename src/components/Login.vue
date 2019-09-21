@@ -64,6 +64,7 @@
 <script>
 
     import user from '@/api/user'
+    import prize from '@/api/prize'
     import myStorage from '@/utils/myStorage'
 
     export default {
@@ -113,9 +114,8 @@
                             icon: <a-icon type="smile" style="color: #108ee9" />,
                         });
                         _this.$store.state.user = res.data;
-                        myStorage.setUserSession(res.data);//将登陆用户信息放入Session中
-                        myStorage.initPrizeUserId();//更新点赞的用户ID
-                        user.userPrizeList(myStorage.getPrizeList()).then(res=>{
+                        myStorage.setUserSession(res.data);
+                        prize.userLoginSyncPrizeList({"userId":res.data.id,"prizeList":myStorage.getPrizeList()}).then(res=>{
                           if(res.code==200){
                             myStorage.removePrizeList();
                           }

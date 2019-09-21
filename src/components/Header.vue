@@ -115,6 +115,7 @@ import { mapState } from 'vuex'
 import { getDateDiff } from '@/utils/date'
 import myStorage from '@/utils/myStorage'
 import user from '@/api/user'
+import prize from '@/api/prize'
 
 export default {
   data(){
@@ -185,18 +186,17 @@ export default {
     },
     prizeHandle(){
       let _this = this;
-      console.log(JSON.parse(localStorage.getItem("prizeList")));
-      
+      //console.log(JSON.parse(localStorage.getItem("prizeList")));
       this.$notification.destroy();
       // 用户未登录
       if(this.user==null){
         if(this.ana.isPrize==0){
-          user.userPrize({"anaId":this.ana.id,"userId":0}).then(res=>{
+          prize.anaPrizeUnLogin({"anaId":this.ana.id}).then(res=>{
             if(res.code==200){
               //console.log("点赞成功!");
               _this.ana.isPrize++;
               _this.ana.prizeNum++;
-              myStorage.addPrize({"userId":"0","anaId":this.ana.id});
+              myStorage.addPrize(this.ana.id);
             }
           })
         }else{
@@ -210,7 +210,7 @@ export default {
       }else{
         if(this.ana.isPrize == 0){
           this.ana.isPrize++;
-          user.userPrize({"anaId":this.ana.id,"userId":this.user.id}).then(res=>{
+          user.anaPrizeLogin({"anaId":this.ana.id,"userId":this.user.id}).then(res=>{
             if(res.code==200){
               //console.log("点赞成功!");
               _this.ana.isPrize++;

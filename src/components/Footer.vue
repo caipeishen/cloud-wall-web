@@ -18,19 +18,11 @@
                 </a-row>
             </a-col>
         </a-row>
-        <!-- 这里加 v-if 是位了让 封装的附件不先加载，等点击再加载 -->
-        <a-row v-if="loginVisible">
-            <Login :visible.sync="loginVisible"/>
-        </a-row>
-        <a-row v-if="registerVisible">
-            <Register :visible.sync="registerVisible"/>
-        </a-row>
-        <a-row v-if="mineVisible">
-            <Mine :visible.sync="mineVisible"/>
-        </a-row>
-        <a-row v-if="publishVisible">
-            <Publish :visible.sync="publishVisible"/>
-        </a-row>
+        <!-- 这里加 v-if 是位了让 封装的附件不先加载，等点击再加载（例如点击我，如果在打开页面就初始化了那么该页面不回显示数据） -->
+        <Login :visible.sync="loginVisible"/>
+        <Register :visible.sync="registerVisible"/>
+        <Mine v-if="mineVisible" :visible.sync="mineVisible"/>
+        <Publish :visible.sync="publishVisible"/>
 
 
     </div>

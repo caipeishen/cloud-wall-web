@@ -12,14 +12,6 @@ var myStorage = {
   setPrizeList(prizeList){
     localStorage.setItem("prizeList",JSON.stringify(prizeList));
   },
-  initPrizeUserId(){
-    let prizeList = this.getPrizeList();
-    console.log(this.getUserSession());
-    for(let prize of prizeList){
-      prize.userId = this.getUserSession().id;
-    }
-    this.setPrizeList(prizeList);
-  },
   removePrizeList(){
     localStorage.removeItem("prizeList");
   },
