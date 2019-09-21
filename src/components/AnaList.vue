@@ -45,11 +45,11 @@
                         </a-pagination>
                     </a-col>
                 </a-row>
-                <a-row v-else style="margin:30px 0px 50px" type="flex" align="middle" justify="center" >
+                <!-- <a-row v-else style="margin:30px 0px 50px" type="flex" align="middle" justify="center" >
                     <a-col :span="24" type="flex" align="middle" justify="center" >
                         暂无内容
                     </a-col>
-                </a-row>
+                </a-row> -->
             </a-col>
         </a-row>
 
