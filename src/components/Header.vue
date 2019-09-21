@@ -210,7 +210,7 @@ export default {
       }else{
         if(this.ana.isPrize == 0){
           this.ana.isPrize++;
-          user.anaPrizeLogin({"anaId":this.ana.id,"userId":this.user.id}).then(res=>{
+          prize.anaPrizeLogin({"anaId":this.ana.id,"userId":this.user.id}).then(res=>{
             if(res.code==200){
               //console.log("点赞成功!");
               _this.ana.isPrize++;

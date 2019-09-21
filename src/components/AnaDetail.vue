@@ -128,9 +128,7 @@ export default {
         //console.log(myStorage.getPrizeList());
         myStorage.getPrizeList().find(id => {
             if(id == this.anaId){
-                console.log("进入:"+id+"  "+this.anaId);
                 this.$store.state.ana.isPrize = 1;
-                console.log(this.$store.state.ana.isPrize);
             }
         });
     },
