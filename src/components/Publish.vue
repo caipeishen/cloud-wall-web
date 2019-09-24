@@ -136,7 +136,6 @@
                 this.form.validateFields(function(errors,values){
                   let user = myStorage.getUserSession();
                   values.userId = user.id;
-                  values.anaFrom = user.userNickName;
                   ana.anaPublic(values).then((res)=>{
                     if(res.code==200){
                         _this.handleCancel();

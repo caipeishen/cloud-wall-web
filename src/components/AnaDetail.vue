@@ -44,6 +44,7 @@
                     >
                         <a-list-item slot="renderItem" slot-scope="item,index">
                         <a-comment :author="item.userNickName" :avatar="apiUrl + item.userHeadImg">
+                            <a-avatar :src="apiUrl + item.userHeadImg" />
                             <p slot="content" style="margin-top:10px">{{item.commentContent}}</p>
                             <a-tooltip slot="datetime" :title="moment(item.createDate).format('lll')">
                                 <span>{{getDateDiff(item.createDate)}}</span>
@@ -129,6 +130,7 @@ export default {
         myStorage.getPrizeList().find(id => {
             if(id == this.anaId){
                 this.$store.state.ana.isPrize = 1;
+                console.log("赞!");
             }
         });
     },

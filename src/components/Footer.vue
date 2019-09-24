@@ -8,7 +8,7 @@
                     <a-col v-if="user!=null" class="loginOut" @click="loginOut">退出</a-col>
                     <a-col v-else class="login" @click="loginVisible=true">登录</a-col>·
                     <a-col class="register" @click="registerVisible=true">注册</a-col>·
-                    <a-col class="mine" @click="mineHandle"> 我 </a-col>·
+                    <a-col class="mine" @click="mineHandle">我的</a-col>·
                     <a-col class="publish" @click="publishHandle">发布</a-col>·
                     <a-col class="youLian" @click="homeHandle">友链</a-col>
                 </a-row>

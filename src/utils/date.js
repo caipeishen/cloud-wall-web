@@ -10,7 +10,7 @@ export function getDateDiff(dateStr){
   var diffValue = now - dateTimeStamp;
   if(diffValue < 0){
       //若日期不符则弹出窗口告之
-      console("结束日期不能小于开始日期！");
+      console.log("结束日期不能小于开始日期！");
   }
   var yearC = diffValue/(12*month);
   var monthC = diffValue/month;
