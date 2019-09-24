@@ -44,7 +44,6 @@
                     >
                         <a-list-item slot="renderItem" slot-scope="item,index">
                         <a-comment :author="item.userNickName" :avatar="apiUrl + item.userHeadImg">
-                            <a-avatar :src="apiUrl + item.userHeadImg" />
                             <p slot="content" style="margin-top:10px">{{item.commentContent}}</p>
                             <a-tooltip slot="datetime" :title="moment(item.createDate).format('lll')">
                                 <span>{{getDateDiff(item.createDate)}}</span>
