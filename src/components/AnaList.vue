@@ -31,6 +31,7 @@
                 <a-row v-if="anaList.length!=0" style="margin:60px 0px 50px" type="flex" align="middle" justify="center" >
                     <a-col :span="24" type="flex" align="middle" justify="center" >
                         <a-pagination
+                            size="small"
                             :pageSizeOptions="anaPageSizeOptions"
                             :total="anaPage.total"
                             showSizeChanger
