@@ -133,7 +133,7 @@ export default {
       isShowMobile:false,
       isShowPayment:false,
       // 因为Header不再包含在路由中，所以需要特别处理一下（这里使用了watch）
-      anaTypeId:1
+      anaTypeId:0
     }
   },
   watch:{

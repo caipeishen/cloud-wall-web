@@ -13,7 +13,7 @@ export default new Router({
   routes: [ 
     {
       path: '/',
-      redirect:'AnaList/1'
+      redirect:'AnaList/0'
     },
     {
       path: '/AnaList/:anaTypeId',
