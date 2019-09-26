@@ -39,14 +39,8 @@
                     ]"
                     @change="handleChange"
                   >
-                    <a-select-option value="2">
-                      热评
-                    </a-select-option>
-                    <a-select-option value="3">
-                      短句
-                    </a-select-option>
-                    <a-select-option value="4">
-                      段子
+                    <a-select-option v-for="anaType in $store.state.anaTypeList" :key="anaType.id" v-if="anaType.id!=0">
+                      {{anaType.anaTypeName}}
                     </a-select-option>
                   </a-select>
                 </a-form-item>
