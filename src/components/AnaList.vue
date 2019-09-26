@@ -30,8 +30,9 @@
                 </a-row>
                 <a-row v-if="anaList.length!=0" style="margin:60px 0px 50px" type="flex" align="middle" justify="center" >
                     <a-col :span="24" type="flex" align="middle" justify="center" >
+                        <!-- 移动端用简单分页，PC使用正常分页 -->
                         <a-pagination
-                            size="small"
+                            :simple="!isPC"
                             :pageSizeOptions="anaPageSizeOptions"
                             :total="anaPage.total"
                             showSizeChanger
@@ -77,8 +78,14 @@ export default {
         Footer
     },
     data(){ 
+        var UA = navigator.userAgent;
+        var ipad = !!(UA.match(/(iPad).*OS\s([\d_]+)/)),
+            isIphone = !!(!ipad && UA.match(/(iPhone\sOS)\s([\d_]+)/)),
+            isAndroid = !!(UA.match(/(Android)\s+([\d.]+)/)),
+            isPC = !(isIphone || isAndroid || ipad);
         return{
-            anaTypeId:this.$route.params.anaTypeId || 1,
+            isPC: isPC,
+            anaTypeId:this.$route.params.anaTypeId || 0,
             anaList:[],
             anaPage:{current: 1,pageSize: 10,total:0},
             anaPageSizeOptions: ['10', '20', '30'],

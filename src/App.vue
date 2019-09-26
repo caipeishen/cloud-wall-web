@@ -23,16 +23,6 @@ export default {
   components:{
     Header
   },
-  data(){
-    var UA = navigator.userAgent;
-    var ipad = !!(UA.match(/(iPad).*OS\s([\d_]+)/)),
-        isIphone = !!(!ipad && UA.match(/(iPhone\sOS)\s([\d_]+)/)),
-        isAndroid = !!(UA.match(/(Android)\s+([\d.]+)/)),
-        isPC = !(isIphone || isAndroid || ipad);
-    return {
-      isPC: isPC,
-    }
-  },
   mounted() {
     Array.prototype.contains = function(needle) {
       for (let i in this) {
