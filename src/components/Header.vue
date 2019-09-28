@@ -2,7 +2,7 @@
     <div @click="isShowWeChat=false,isShowQQ=false,isShowMobile=false,isShowPayment=false">
       
       <!-- 顶部导航 -->
-      <a-row v-if="isShowNav" class="fixNavTop" type="flex" justify="center">
+      <a-row v-if="isShowNav && isPC" class="fixNavTop" type="flex" justify="center">
         <a-col :xs="20" :sm="20" :md="20" :lg="12" :xl="12" >
             <a-row type="flex" align="middle" justify="space-between"  >
                 <a-col class="fixNavTitle">网易云热评墙</a-col>
