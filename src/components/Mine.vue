@@ -27,9 +27,20 @@
                   <span class="mobile">手机号：{{userMobileModify}}</span>
                 </p>
                 <p v-else>
-                 <span class="userNickNameModify">昵称：<input v-model="userNickNameModify" /><br/></span>
-                 <span class="userSignatureModify">签名：<input v-model="userSignatureModify" /></span>
-                 <span class="userMobileModify">手机号：<input v-model="userMobileModify" /></span>
+                  <a-row type="flex" align="top" justif="start">
+                    <a-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">昵称：</a-col>
+                    <a-col :xs="18" :sm="18" :md="18" :lg="18" :xl="18"><input v-model="userNickNameModify" /></a-col>
+                  </a-row>
+                  <a-row style="margin:2px 0px"></a-row>
+                  <a-row type="flex" align="top" justif="start">
+                    <a-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">签名：</a-col>
+                    <a-col :xs="18" :sm="18" :md="18" :lg="18" :xl="18"><input v-model="userSignatureModify" /></a-col>
+                  </a-row>
+                  <a-row style="margin:2px 0px"></a-row>
+                  <a-row type="flex" align="top" justif="start">
+                    <a-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">手机号：</a-col>
+                    <a-col :xs="18" :sm="18" :md="18" :lg="18" :xl="18"><input v-model="userMobileModify" /></a-col>
+                  </a-row>
                 </p>
               </a-col>
             </a-row>
@@ -113,36 +124,51 @@
             // 更新用户信息
             updateUserInfo(){
               this.$notification.destroy();
-              if(this.saveState){
-                if(this.userNickName != this.userNickNameModify || this.userSignature != this.userSignatureModify || this.userMobile != this.userMobileModify){
-                  user.userModify({"userId":this.user.id,"userNickName":this.userNickNameModify,"userSignature":this.userSignatureModify,"userMobile":this.userMobileModify}).then(res=>{
-                    if(res.code == 200){
-                      this.$notification.open({
-                          message: '消息',
-                          description: '更新成功!',
-                          icon: <a-icon type="smile" style="color: #108ee9" />,
-                      });
-                      
-                      this.userNickName = this.userNickNameModify;
-                      this.userSignature = this.userSignatureModify;
-                      this.userMobile = this.userMobileModify;
-                      let user = myStorage.getUserSession();
-                      user.userNickName = this.userNickNameModify;
-                      user.userSignature = this.userSignatureModify;
-                      user.userMobile = this.userMobileModify;
-                      this.$store.state.user = user;
-                      myStorage.setUserSession(user);
-                    }else{
-                      this.$notification.open({
-                          message: '消息',
-                          description: res.message,
-                          icon: <a-icon type="smile" style="color: #108ee9" />,
-                      });
-                    }
-                  })
+              const validateUserMobileReg = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
+              if(this.userNickNameModify==''){
+                this.$notification.open({
+                    message: '消息',
+                    description: '请输入昵称!',
+                    icon: <a-icon type="frown" style="color: #FAAD14" />,
+                });
+              }else if(!validateUserMobileReg.test(this.userMobileModify)) {
+                this.$notification.open({
+                    message: '消息',
+                    description: '请输入正确手机号码!',
+                    icon: <a-icon type="frown" style="color: #FAAD14" />,
+                });
+              }else{
+                if(this.saveState){
+                  if(this.userNickName != this.userNickNameModify || this.userSignature != this.userSignatureModify || this.userMobile != this.userMobileModify){
+                    user.userModify({"userId":this.user.id,"userNickName":this.userNickNameModify,"userSignature":this.userSignatureModify,"userMobile":this.userMobileModify}).then(res=>{
+                      if(res.code == 200){
+                        this.$notification.open({
+                            message: '消息',
+                            description: '更新成功!',
+                            icon: <a-icon type="smile" style="color: #108ee9" />,
+                        });
+                        
+                        this.userNickName = this.userNickNameModify;
+                        this.userSignature = this.userSignatureModify;
+                        this.userMobile = this.userMobileModify;
+                        let user = myStorage.getUserSession();
+                        user.userNickName = this.userNickNameModify;
+                        user.userSignature = this.userSignatureModify;
+                        user.userMobile = this.userMobileModify;
+                        this.$store.state.user = user;
+                        myStorage.setUserSession(user);
+                      }else{
+                        this.$notification.open({
+                            message: '消息',
+                            description: res.message,
+                            icon: <a-icon type="smile" style="color: #108ee9" />,
+                        });
+                      }
+                    })
+                  }
                 }
+                this.saveState = !this.saveState;
               }
-              this.saveState = !this.saveState;
             },
             // 上传之后
             beforeUpload(file){
@@ -225,7 +251,8 @@
 
 <style scoped>
   input{
-    border:none;
+    border: none;
+    border-bottom:1px solid bisque;
   }
   .nickName,.signature,.mobile{
     display: block;
