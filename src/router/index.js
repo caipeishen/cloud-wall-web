@@ -1,14 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-// 懒加载
-const AnaList = () => import('@/components/AnaList.vue');
-const AnaDetail = () => import('@/components/AnaDetail.vue');
-const Login = () => import('@/components/Login.vue');
-const Register = () => import('@/components/Register.vue');
-
 Vue.use(Router)
 
+// 路由懒加载模式
 export default new Router({
   routes: [ 
     {
@@ -18,19 +13,19 @@ export default new Router({
     {
       path: '/AnaList/:anaTypeId',
       name: 'AnaList',
-      component: AnaList
+      component: () => import('@/components/AnaList.vue')
     },{
       path: '/AnaDetail/:anaTypeId/:anaId',
       name: 'AnaDetail',
-      component: AnaDetail
+      component: () => import('@/components/AnaDetail.vue')
     },{
       path: '/Login',
       name: 'Login',
-      component: Login
+      component: () => import('@/components/Login.vue')
     },{
       path: '/Register',
       name: 'Register',
-      component: Register
+      component: () => import('@/components/Register.vue')
     }
   ]
 })
