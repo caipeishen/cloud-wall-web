@@ -18,7 +18,7 @@
     "jquery": "^3.4.1",
     "less-loader": "^5.0.0",
     "mobile-detect": "^1.4.3",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "pubsub-js": "^1.7.0",
     "qs": "^6.7.0",
     "reqwest": "^2.0.5",
