@@ -4,7 +4,6 @@
         title="~_~" 
         :visible="visible"
         footer="false"
-        width="30%"
         destroyOnClose
         @cancel="handleCancel"
       >
